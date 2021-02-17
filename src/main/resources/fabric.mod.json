@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "customizableelytra-fabric",
+  "version": "${version}",
+  "name": "Customizableelytra Fabric",
+  "description": "Allows elytra to be dyed like leather armor and have banners placed on them like shields",
+  "authors": [
+    "Hidoni"
+  ],
+  "contact": {
+    "repo": "https://github.com/Hidoni/CustomizableElytra"
+  },
+  "license": "MIT",
+  "icon": "assets/customizableelytra-fabric/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.hidoni.customizableelytrafabric.client.CustomizableElytra"
+    ],
+    "main": [
+      "com.hidoni.customizableelytrafabric.CustomizableElytra"
+    ]
+  },
+  "mixins": [
+    "customizableelytra-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.1",
+    "fabric": "*",
+    "minecraft": "1.16.5"
+  }
+}

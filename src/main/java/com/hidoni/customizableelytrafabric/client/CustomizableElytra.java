@@ -36,6 +36,5 @@ public class CustomizableElytra implements ClientModInitializer
                 registry.register(textureIdentifier);
             }
         }));
-
     }
 }

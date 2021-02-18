@@ -11,7 +11,7 @@
     "repo": "https://github.com/Hidoni/CustomizableElytra"
   },
   "license": "MIT",
-  "icon": "assets/customizableelytra-fabric/icon.png",
+  "icon": "assets/customizableelytra/icon.png",
   "environment": "*",
   "entrypoints": {
     "client": [
@@ -27,6 +27,7 @@
   "depends": {
     "fabricloader": ">=0.11.1",
     "fabric": "*",
-    "minecraft": "1.16.5"
+    "minecraft": "1.16.5",
+    "caelus": "*"
   }
 }

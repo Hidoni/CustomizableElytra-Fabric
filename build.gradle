@@ -9,6 +9,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
+def caelus_version = "0.0.9-1.16.3"
 
 dependencies {
     //to change the versions see the gradle.properties file
@@ -74,4 +75,14 @@ publishing {
         // uncomment to publish to the local maven
         // mavenLocal()
     }
+}
+
+repositories {
+    maven {
+        url = "https://maven.theillusivec4.top"
+    }
+}
+
+dependencies {
+    modImplementation "top.theillusivec4.caelus:caelus-fabric:${caelus_version}"
 }

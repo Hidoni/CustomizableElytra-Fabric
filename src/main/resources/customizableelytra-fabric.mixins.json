@@ -1,11 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.hidoni.customizableelytrafabric.customizableelytrafabric.mixin",
+  "package": "com.hidoni.customizableelytrafabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
   ],
   "client": [
+    "PlayerEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

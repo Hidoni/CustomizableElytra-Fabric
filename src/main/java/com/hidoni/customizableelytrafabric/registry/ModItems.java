@@ -17,7 +17,7 @@ public class ModItems
         return EquipmentSlot.CHEST;
     }))));
 
-    public static final Item ELYTRA_WING = Registry.register(Registry.ITEM, new Identifier(CustomizableElytra.MOD_ID, "customizable_elytra"), new ElytraWingItem(new FabricItemSettings().rarity(Rarity.UNCOMMON)));
+    public static final Item ELYTRA_WING = Registry.register(Registry.ITEM, new Identifier(CustomizableElytra.MOD_ID, "elytra_wing"), new ElytraWingItem(new FabricItemSettings().rarity(Rarity.UNCOMMON)));
 
     public static void register()
     {

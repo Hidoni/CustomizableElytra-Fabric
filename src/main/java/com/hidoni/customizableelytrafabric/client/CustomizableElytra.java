@@ -1,6 +1,7 @@
 package com.hidoni.customizableelytrafabric.client;
 
 import com.hidoni.customizableelytrafabric.item.CustomizableElytraItem;
+import com.hidoni.customizableelytrafabric.item.ElytraWingItem;
 import com.hidoni.customizableelytrafabric.registry.ModItems;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -31,7 +32,7 @@ public class CustomizableElytra implements ClientModInitializer
         }, ModItems.CUSTOMIZABLE_ELYTRA);
         ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
         {
-            return tintIndex > 0 ? -1 : ((CustomizableElytraItem) stack.getItem()).getColor(stack);
+            return tintIndex > 0 ? -1 : ((ElytraWingItem) stack.getItem()).getColor(stack);
         }, ModItems.ELYTRA_WING);
 
         ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) ->

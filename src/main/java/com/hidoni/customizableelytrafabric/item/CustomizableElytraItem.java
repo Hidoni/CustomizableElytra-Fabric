@@ -78,7 +78,7 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
             if (wingInfo.contains("right"))
             {
                 tooltip.add(new TranslatableText(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                CompoundTag leftWing = wingInfo.getCompound("left");
+                CompoundTag leftWing = wingInfo.getCompound("right");
                 applyWingTooltip(tooltip, context, leftWing);
             }
         }

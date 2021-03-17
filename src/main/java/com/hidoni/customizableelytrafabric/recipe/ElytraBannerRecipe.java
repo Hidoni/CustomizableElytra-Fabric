@@ -52,7 +52,7 @@ public class ElytraBannerRecipe extends SpecialCraftingRecipe
                         return false;
                     }
 
-                    if (inventoryItem.getSubTag("BlockEntityTag") != null)
+                    if (inventoryItem.getSubTag("BlockEntityTag") != null || inventoryItem.getSubTag("WingInfo") != null)
                     {
                         return false;
                     }

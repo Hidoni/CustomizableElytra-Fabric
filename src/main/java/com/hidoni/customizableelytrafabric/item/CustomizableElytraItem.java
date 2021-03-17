@@ -47,8 +47,9 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
     @Override
     public boolean hasColor(ItemStack stack)
     {
-        CompoundTag compoundTag = stack.getSubTag("BlockEntityTag");
-        return DyeableItem.super.hasColor(stack) || compoundTag != null;
+        CompoundTag bannerTag = stack.getSubTag("BlockEntityTag");
+        CompoundTag wingTag = stack.getSubTag("WingInfo");
+        return DyeableItem.super.hasColor(stack) || bannerTag != null || wingTag != null;
     }
 
     @Override
@@ -59,6 +60,11 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
         if (compoundTag != null)
         {
             stack.removeSubTag("BlockEntityTag");
+        }
+        compoundTag = stack.getSubTag("WingInfo");
+        if (compoundTag != null)
+        {
+            stack.removeSubTag("WingInfo");
         }
     }
 

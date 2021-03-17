@@ -10,6 +10,7 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 def caelus_version = "0.0.9-1.16.3"
+def trinkets_version = "2.6.7"
 
 dependencies {
     //to change the versions see the gradle.properties file
@@ -81,8 +82,13 @@ repositories {
     maven {
         url = "https://maven.theillusivec4.top"
     }
+    maven {
+        url = "https://jitpack.io"
+    }
+
 }
 
 dependencies {
     modImplementation "top.theillusivec4.caelus:caelus-fabric:${caelus_version}"
+    modImplementation "com.github.emilyalexandra:trinkets:${trinkets_version}"
 }

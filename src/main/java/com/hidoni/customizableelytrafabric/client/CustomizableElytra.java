@@ -24,10 +24,16 @@ public class CustomizableElytra implements ClientModInitializer
         {
             return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA && CustomizableElytraItem.isUsable(stack) ? 0.0F : 1.0F;
         }));
+
         ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
         {
             return tintIndex > 0 ? -1 : ((CustomizableElytraItem) stack.getItem()).getColor(stack);
         }, ModItems.CUSTOMIZABLE_ELYTRA);
+        ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
+        {
+            return tintIndex > 0 ? -1 : ((CustomizableElytraItem) stack.getItem()).getColor(stack);
+        }, ModItems.ELYTRA_WING);
+
         ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) ->
         {
             for (BannerPattern pattern : BannerPattern.values())

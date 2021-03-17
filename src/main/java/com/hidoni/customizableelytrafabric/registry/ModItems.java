@@ -2,6 +2,7 @@ package com.hidoni.customizableelytrafabric.registry;
 
 import com.hidoni.customizableelytrafabric.CustomizableElytra;
 import com.hidoni.customizableelytrafabric.item.CustomizableElytraItem;
+import com.hidoni.customizableelytrafabric.item.ElytraWingItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
@@ -15,6 +16,8 @@ public class ModItems
     {
         return EquipmentSlot.CHEST;
     }))));
+
+    public static final Item ELYTRA_WING = Registry.register(Registry.ITEM, new Identifier(CustomizableElytra.MOD_ID, "customizable_elytra"), new ElytraWingItem(new FabricItemSettings().rarity(Rarity.UNCOMMON)));
 
     public static void register()
     {

@@ -3,7 +3,7 @@
   "overrides": [
     {
       "predicate": {
-        "customizableelytra:broken_elytra": 1.0
+        "minecraft:broken_elytra": 1.0
       },
       "model": "minecraft:item/broken_elytra"
     }

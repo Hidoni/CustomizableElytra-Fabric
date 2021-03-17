@@ -42,7 +42,7 @@ public class ElytraBannerRecipe extends SpecialCraftingRecipe
                 }
                 else
                 {
-                    if (inventoryItem.getItem() != Items.ELYTRA && inventoryItem.getItem() != ModItems.CUSTOMIZABLE_ELYTRA)
+                    if (inventoryItem.getItem() != Items.ELYTRA && inventoryItem.getItem() != ModItems.CUSTOMIZABLE_ELYTRA && inventoryItem.getItem() != ModItems.ELYTRA_WING)
                     {
                         return false;
                     }
@@ -82,7 +82,7 @@ public class ElytraBannerRecipe extends SpecialCraftingRecipe
                 }
                 else if (inventoryItem.getItem() == Items.ELYTRA)
                 {
-                    ItemStack customizableElytraItem = new ItemStack(ModItems.CUSTOMIZABLE_ELYTRA, inventoryItem.getCount());
+                    ItemStack customizableElytraItem = new ItemStack(ModItems.CUSTOMIZABLE_ELYTRA);
                     EnchantmentHelper.set(EnchantmentHelper.get(inventoryItem), customizableElytraItem);
                     if (elytraItem.hasCustomName())
                     {
@@ -92,9 +92,10 @@ public class ElytraBannerRecipe extends SpecialCraftingRecipe
                     customizableElytraItem.setRepairCost(inventoryItem.getRepairCost());
                     elytraItem = customizableElytraItem;
                 }
-                else if (inventoryItem.getItem() == ModItems.CUSTOMIZABLE_ELYTRA)
+                else if (inventoryItem.getItem() == ModItems.CUSTOMIZABLE_ELYTRA || inventoryItem.getItem() == ModItems.ELYTRA_WING)
                 {
                     elytraItem = inventoryItem.copy();
+                    elytraItem.setCount(1);
                 }
             }
         }

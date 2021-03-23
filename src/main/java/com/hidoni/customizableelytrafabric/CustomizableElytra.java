@@ -16,7 +16,7 @@ public class CustomizableElytra implements ModInitializer
     public void onInitialize()
     {
         caleusLoaded = FabricLoader.getInstance().isModLoaded("caelus");
-        curiosLoaded = FabricLoader.getInstance().isModLoaded("curios");
+        // curiosLoaded = FabricLoader.getInstance().isModLoaded("curios"); TODO: Implement custom curio class to prevent Curious Elytra from rendering a vanilla elytra at the same time, until then, disabled.
         trinketsLoaded = FabricLoader.getInstance().isModLoaded("trinkets");
         ModItems.register();
         ModRecipes.register();

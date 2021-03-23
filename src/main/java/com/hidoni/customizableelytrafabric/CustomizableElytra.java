@@ -9,14 +9,14 @@ public class CustomizableElytra implements ModInitializer
 {
     public static String MOD_ID = "customizableelytra";
     public static boolean caleusLoaded = false;
-    // public static boolean curiosLoaded = false; FIXME: Curios doesn't seem to work right now.
+    public static boolean curiosLoaded = false;
     public static boolean trinketsLoaded = false;
 
     @Override
     public void onInitialize()
     {
         caleusLoaded = FabricLoader.getInstance().isModLoaded("caelus");
-        // curiosLoaded = FabricLoader.getInstance().isModLoaded("curios");
+        curiosLoaded = FabricLoader.getInstance().isModLoaded("curios");
         trinketsLoaded = FabricLoader.getInstance().isModLoaded("trinkets");
         ModItems.register();
         ModRecipes.register();

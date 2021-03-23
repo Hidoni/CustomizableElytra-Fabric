@@ -29,10 +29,13 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.jetbrains.annotations.NotNull;
+import top.theillusivec4.curios.api.CuriosApi;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends EntityModel<T>> extends ElytraFeatureRenderer<T, M>
 {
@@ -313,15 +316,15 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         return ItemStack.EMPTY;
     }
 
-    /*public ItemStack getCurioElytra(LivingEntity entity)
+    public ItemStack getCurioElytra(LivingEntity entity)
     {
-        Optional<ImmutableTriple<String, Integer, ItemStack>> curio = CuriosApi.getCuriosHelper().findEquippedCurio(ModItems.CUSTOMIZABLE_ELYTRA.get(), entity);
+        Optional<ImmutableTriple<String, Integer, ItemStack>> curio = CuriosApi.getCuriosHelper().findEquippedCurio(ModItems.CUSTOMIZABLE_ELYTRA, entity);
         if (curio.isPresent())
         {
             return curio.get().getRight();
         }
         return ItemStack.EMPTY;
-    }*/
+    }
 
     public ItemStack tryFindElytra(LivingEntity entity)
     {
@@ -337,17 +340,21 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
             {
                 return elytra;
             }
-            /*if (CustomizableElytra.curiosLoaded)
+        }
+        if (com.hidoni.customizableelytrafabric.CustomizableElytra.curiosLoaded)
+        {
+            elytra = getCurioElytra(entity);
+            if (elytra != ItemStack.EMPTY)
             {
-                return getCurioElytra(entity);
-            }*/
-            if (com.hidoni.customizableelytrafabric.CustomizableElytra.trinketsLoaded && entity instanceof PlayerEntity)
+                return elytra;
+            }
+        }
+        if (com.hidoni.customizableelytrafabric.CustomizableElytra.trinketsLoaded && entity instanceof PlayerEntity)
+        {
+            elytra = TrinketsApi.getTrinketComponent((PlayerEntity) entity).getStack("chest", "cape");
+            if (elytra.getItem() == ModItems.CUSTOMIZABLE_ELYTRA)
             {
-                elytra = TrinketsApi.getTrinketComponent((PlayerEntity) entity).getStack("chest", "cape");
-                if (elytra.getItem() == ModItems.CUSTOMIZABLE_ELYTRA)
-                {
-                    return elytra;
-                }
+                return elytra;
             }
         }
         return ItemStack.EMPTY;

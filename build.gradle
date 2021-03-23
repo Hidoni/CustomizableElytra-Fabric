@@ -11,6 +11,7 @@ version = project.mod_version
 group = project.maven_group
 def caelus_version = "0.0.9-1.16.3"
 def trinkets_version = "2.6.7"
+def curios_version = "0.0.13-1.16.5"
 
 dependencies {
     //to change the versions see the gradle.properties file
@@ -85,10 +86,15 @@ repositories {
     maven {
         url = "https://jitpack.io"
     }
+    maven {
+        name = "Ladysnake Libs"
+        url = 'https://dl.bintray.com/ladysnake/libs'
+    }
 
 }
 
 dependencies {
     modImplementation "top.theillusivec4.caelus:caelus-fabric:${caelus_version}"
     modImplementation "com.github.emilyalexandra:trinkets:${trinkets_version}"
+    modImplementation "top.theillusivec4.curios:curios-fabric:${curios_version}"
 }

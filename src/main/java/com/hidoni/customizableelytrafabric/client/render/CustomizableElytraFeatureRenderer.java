@@ -16,6 +16,7 @@ import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.ElytraEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -114,7 +115,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         matrixStackIn.translate(0.0D, 0.0D, 0.125D);
         this.getContextModel().copyStateTo(this.modelElytra);
         this.modelElytra.setAngles(livingEntity, f, g, j, k, l);
-        VertexConsumer glintConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, RenderLayer.getArmorCutoutNoCull(elytraTexture), false, elytra.hasGlint());
+        VertexConsumer glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, RenderLayer.getEntityNoOutline(elytraTexture), false, elytra.hasGlint());
         this.modelElytra.render(matrixStackIn, glintConsumer, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 
         List<com.mojang.datafixers.util.Pair<BannerPattern, DyeColor>> list = BannerBlockEntity.method_24280(ShieldItem.getColor(elytra), BannerBlockEntity.getPatternListTag(elytra));
@@ -124,7 +125,10 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
             Pair<BannerPattern, DyeColor> pair = list.get(count);
             float[] afloat = pair.getSecond().getColorComponents();
             SpriteIdentifier rendermaterial = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, CustomizableElytraItem.getTextureLocation(pair.getFirst()));
-            this.modelElytra.render(matrixStackIn, rendermaterial.getVertexConsumer(vertexConsumerProvider, RenderLayer::getArmorCutoutNoCull), i, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);
+            if (rendermaterial.getSprite().getId() != MissingSprite.getMissingSpriteId()) // Don't render missing banner patterns
+            {
+                this.modelElytra.render(matrixStackIn, rendermaterial.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntityTranslucent), i, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);
+            }
         }
         matrixStackIn.pop();
     }
@@ -243,7 +247,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         Identifier elytraTexture = getElytraTexture(elytra, livingEntity);
         this.getContextModel().copyStateTo(wingIn);
         wingIn.setAngles(livingEntity, f, g, j, k, l);
-        VertexConsumer glintConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, RenderLayer.getArmorCutoutNoCull(elytraTexture), false, elytra.hasGlint());
+        VertexConsumer glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, RenderLayer.getEntityNoOutline(elytraTexture), false, elytra.hasGlint());
         wingIn.render(matrixStackIn, glintConsumer, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
 
         List<com.mojang.datafixers.util.Pair<BannerPattern, DyeColor>> list = BannerBlockEntity.method_24280(base, patterns);
@@ -253,7 +257,10 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
             Pair<BannerPattern, DyeColor> pair = list.get(count);
             float[] afloat = pair.getSecond().getColorComponents();
             SpriteIdentifier rendermaterial = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, CustomizableElytraItem.getTextureLocation(pair.getFirst()));
-            wingIn.render(matrixStackIn, rendermaterial.getVertexConsumer(vertexConsumerProvider, RenderLayer::getArmorCutoutNoCull), i, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);
+            if (rendermaterial.getSprite().getId() != MissingSprite.getMissingSpriteId()) // Don't render missing banner patterns
+            {
+                wingIn.render(matrixStackIn, rendermaterial.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntityTranslucent), i, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);
+            }
         }
     }
 

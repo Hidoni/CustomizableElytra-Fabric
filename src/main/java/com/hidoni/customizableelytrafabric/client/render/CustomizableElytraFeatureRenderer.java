@@ -52,6 +52,8 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         ItemStack elytra = tryFindElytra(livingEntity);
         if (elytra != ItemStack.EMPTY)
         {
+            matrixStack.push();
+            matrixStack.translate(0.0D, 0.0D, 0.125D);
             if (elytra.getSubTag("WingInfo") != null)
             {
                 renderSplit(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra);
@@ -68,6 +70,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
                     renderBanner(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra);
                 }
             }
+            matrixStack.pop();
         }
     }
 
@@ -98,21 +101,16 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
                 elytraTexture = getElytraTexture(elytra, livingEntity);
             }
 
-            matrixStack.push();
-            matrixStack.translate(0.0D, 0.0D, 0.125D);
             this.getContextModel().copyStateTo(this.modelElytra);
             this.modelElytra.setAngles(livingEntity, f, g, j, k, l);
             VertexConsumer glintConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, RenderLayer.getArmorCutoutNoCull(elytraTexture), false, elytra.hasGlint());
             this.modelElytra.render(matrixStack, glintConsumer, i, OverlayTexture.DEFAULT_UV, colors.get(0), colors.get(1), colors.get(2), 1.0F);
-            matrixStack.pop();
         }
     }
 
     public void renderBanner(MatrixStack matrixStackIn, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, ItemStack elytra)
     {
         Identifier elytraTexture = getElytraTexture(elytra, livingEntity);
-        matrixStackIn.push();
-        matrixStackIn.translate(0.0D, 0.0D, 0.125D);
         this.getContextModel().copyStateTo(this.modelElytra);
         this.modelElytra.setAngles(livingEntity, f, g, j, k, l);
         VertexConsumer glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, RenderLayer.getEntityNoOutline(elytraTexture), false, elytra.hasGlint());
@@ -130,14 +128,11 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
                 this.modelElytra.render(matrixStackIn, rendermaterial.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntityTranslucent), i, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);
             }
         }
-        matrixStackIn.pop();
     }
 
     public void renderSplit(MatrixStack matrixStackIn, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, ItemStack elytra)
     {
         CompoundTag wingInfo = elytra.getSubTag("WingInfo");
-        matrixStackIn.push();
-        matrixStackIn.translate(0.0D, 0.0D, 0.125D);
         if (wingInfo.contains("left"))
         {
             CompoundTag wing = wingInfo.getCompound("left");
@@ -178,7 +173,6 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         {
             renderSplitFallback(matrixStackIn, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra, rightWing);
         }
-        matrixStackIn.pop();
     }
 
     public void renderSplitFallback(MatrixStack matrixStackIn, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, ItemStack elytra, ElytraWingModel<T> wingIn)

@@ -1,39 +1,30 @@
 package com.hidoni.customizableelytrafabric.client.render;
 
+import com.google.common.collect.ImmutableList;
 import com.hidoni.customizableelytrafabric.client.CustomizableElytra;
 import com.hidoni.customizableelytrafabric.client.render.model.ElytraWingModel;
-import com.hidoni.customizableelytrafabric.item.CustomizableElytraItem;
 import com.hidoni.customizableelytrafabric.registry.ModItems;
-import com.mojang.datafixers.util.Pair;
+import com.hidoni.customizableelytrafabric.util.ElytraCustomizationData;
+import com.hidoni.customizableelytrafabric.util.ElytraCustomizationUtil;
+import com.hidoni.customizableelytrafabric.util.SplitCustomizationHandler;
 import dev.emi.trinkets.api.TrinketsApi;
-import net.minecraft.block.entity.BannerBlockEntity;
-import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.render.*;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.PlayerModelPart;
 import net.minecraft.client.render.entity.feature.ElytraFeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
 import net.minecraft.client.render.entity.model.ElytraEntityModel;
 import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.texture.MissingSprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
-import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 import org.apache.commons.lang3.tuple.ImmutableTriple;
-import org.jetbrains.annotations.NotNull;
 import top.theillusivec4.curios.api.CuriosApi;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,128 +48,26 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         {
             matrixStack.push();
             matrixStack.translate(0.0D, 0.0D, 0.125D);
-            if (elytra.getSubTag("WingInfo") != null)
+            ElytraCustomizationData data = ElytraCustomizationUtil.getData(elytra);
+            if (data.type != ElytraCustomizationData.CustomizationType.Split)
             {
-                renderSplit(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra);
+                this.getContextModel().copyStateTo(this.modelElytra);
+                data.handler.render(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, this.modelElytra, getTextureWithCape(livingEntity, elytra), elytra.hasGlint());
             }
             else
             {
-                CompoundTag blockEntityTag = elytra.getSubTag("BlockEntityTag");
-                if (blockEntityTag == null)
+                List<ElytraWingModel<T>> models = ImmutableList.of(leftWing, rightWing);
+                for (ElytraWingModel<T> model : models)
                 {
-                    renderDyed(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra);
+                    this.getContextModel().copyStateTo(model);
                 }
-                else
-                {
-                    renderBanner(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra);
-                }
+                ((SplitCustomizationHandler) data.handler).render(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, models, getTextureWithCape(livingEntity, elytra), elytra.hasGlint());
             }
             matrixStack.pop();
         }
     }
 
-    public void renderDyed(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, ItemStack elytra)
-    {
-        List<Float> colors = getColors(elytra);
-        if (colors != null)
-        {
-            Identifier elytraTexture;
-            if (livingEntity instanceof AbstractClientPlayerEntity)
-            {
-                AbstractClientPlayerEntity abstractclientplayerentity = (AbstractClientPlayerEntity) livingEntity;
-                if (abstractclientplayerentity.canRenderElytraTexture() && abstractclientplayerentity.getElytraTexture() != null)
-                {
-                    elytraTexture = abstractclientplayerentity.getElytraTexture();
-                }
-                else if (abstractclientplayerentity.canRenderCapeTexture() && abstractclientplayerentity.getCapeTexture() != null && abstractclientplayerentity.isPartVisible(PlayerModelPart.CAPE))
-                {
-                    elytraTexture = abstractclientplayerentity.getCapeTexture();
-                }
-                else
-                {
-                    elytraTexture = getElytraTexture(elytra, livingEntity);
-                }
-            }
-            else
-            {
-                elytraTexture = getElytraTexture(elytra, livingEntity);
-            }
-
-            this.getContextModel().copyStateTo(this.modelElytra);
-            this.modelElytra.setAngles(livingEntity, f, g, j, k, l);
-            VertexConsumer glintConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, RenderLayer.getArmorCutoutNoCull(elytraTexture), false, elytra.hasGlint());
-            this.modelElytra.render(matrixStack, glintConsumer, i, OverlayTexture.DEFAULT_UV, colors.get(0), colors.get(1), colors.get(2), 1.0F);
-        }
-    }
-
-    public void renderBanner(MatrixStack matrixStackIn, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, ItemStack elytra)
-    {
-        Identifier elytraTexture = getElytraTexture(elytra, livingEntity);
-        this.getContextModel().copyStateTo(this.modelElytra);
-        this.modelElytra.setAngles(livingEntity, f, g, j, k, l);
-        VertexConsumer glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, RenderLayer.getEntityNoOutline(elytraTexture), false, elytra.hasGlint());
-        this.modelElytra.render(matrixStackIn, glintConsumer, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
-
-        List<com.mojang.datafixers.util.Pair<BannerPattern, DyeColor>> list = BannerBlockEntity.method_24280(ShieldItem.getColor(elytra), BannerBlockEntity.getPatternListTag(elytra));
-
-        for (int count = 0; count < 17 && count < list.size(); ++count)
-        {
-            Pair<BannerPattern, DyeColor> pair = list.get(count);
-            float[] afloat = pair.getSecond().getColorComponents();
-            SpriteIdentifier rendermaterial = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, CustomizableElytraItem.getTextureLocation(pair.getFirst()));
-            if (rendermaterial.getSprite().getId() != MissingSprite.getMissingSpriteId()) // Don't render missing banner patterns
-            {
-                this.modelElytra.render(matrixStackIn, rendermaterial.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntityTranslucent), i, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);
-            }
-        }
-    }
-
-    public void renderSplit(MatrixStack matrixStackIn, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, ItemStack elytra)
-    {
-        CompoundTag wingInfo = elytra.getSubTag("WingInfo");
-        if (wingInfo.contains("left"))
-        {
-            CompoundTag wing = wingInfo.getCompound("left");
-            if (wing.contains("color"))
-            {
-                renderSplitDyed(matrixStackIn, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra, leftWing, wing.getInt("color"));
-            }
-            else if (wing.contains("Patterns"))
-            {
-                renderSplitBanner(matrixStackIn, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra, leftWing, DyeColor.byId(wing.getInt("Base")), wing.getList("Patterns", 10).copy());
-            }
-            else
-            {
-                renderSplitFallback(matrixStackIn, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra, leftWing);
-            }
-        }
-        else
-        {
-            renderSplitFallback(matrixStackIn, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra, leftWing);
-        }
-        if (wingInfo.contains("right"))
-        {
-            CompoundTag wing = wingInfo.getCompound("right");
-            if (wing.contains("color"))
-            {
-                renderSplitDyed(matrixStackIn, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra, rightWing, wing.getInt("color"));
-            }
-            else if (wing.contains("Patterns"))
-            {
-                renderSplitBanner(matrixStackIn, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra, rightWing, DyeColor.byId(wing.getInt("Base")), wing.getList("Patterns", 10).copy());
-            }
-            else
-            {
-                renderSplitFallback(matrixStackIn, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra, rightWing);
-            }
-        }
-        else
-        {
-            renderSplitFallback(matrixStackIn, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytra, rightWing);
-        }
-    }
-
-    public void renderSplitFallback(MatrixStack matrixStackIn, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, ItemStack elytra, ElytraWingModel<T> wingIn)
+    private Identifier getTextureWithCape(T livingEntity, ItemStack elytra)
     {
         Identifier elytraTexture;
         if (livingEntity instanceof AbstractClientPlayerEntity)
@@ -201,64 +90,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         {
             elytraTexture = getElytraTexture(elytra, livingEntity);
         }
-
-        this.getContextModel().copyStateTo(wingIn);
-        wingIn.setAngles(livingEntity, f, g, j, k, l);
-        VertexConsumer glintConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, RenderLayer.getArmorCutoutNoCull(elytraTexture), false, elytra.hasGlint());
-        wingIn.render(matrixStackIn, glintConsumer, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
-    }
-
-    public void renderSplitDyed(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, ItemStack elytra, ElytraWingModel<T> wingIn, int color)
-    {
-        List<Float> colors = getColors(color);
-        Identifier elytraTexture;
-        if (livingEntity instanceof AbstractClientPlayerEntity)
-        {
-            AbstractClientPlayerEntity abstractclientplayerentity = (AbstractClientPlayerEntity) livingEntity;
-            if (abstractclientplayerentity.canRenderElytraTexture() && abstractclientplayerentity.getElytraTexture() != null)
-            {
-                elytraTexture = abstractclientplayerentity.getElytraTexture();
-            }
-            else if (abstractclientplayerentity.canRenderCapeTexture() && abstractclientplayerentity.getCapeTexture() != null && abstractclientplayerentity.isPartVisible(PlayerModelPart.CAPE))
-            {
-                elytraTexture = abstractclientplayerentity.getCapeTexture();
-            }
-            else
-            {
-                elytraTexture = getElytraTexture(elytra, livingEntity);
-            }
-        }
-        else
-        {
-            elytraTexture = getElytraTexture(elytra, livingEntity);
-        }
-
-        this.getContextModel().copyStateTo(wingIn);
-        wingIn.setAngles(livingEntity, f, g, j, k, l);
-        VertexConsumer glintConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumerProvider, RenderLayer.getArmorCutoutNoCull(elytraTexture), false, elytra.hasGlint());
-        wingIn.render(matrixStack, glintConsumer, i, OverlayTexture.DEFAULT_UV, colors.get(0), colors.get(1), colors.get(2), 1.0F);
-    }
-
-    public void renderSplitBanner(MatrixStack matrixStackIn, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l, ItemStack elytra, ElytraWingModel<T> wingIn, DyeColor base, ListTag patterns)
-    {
-        Identifier elytraTexture = getElytraTexture(elytra, livingEntity);
-        this.getContextModel().copyStateTo(wingIn);
-        wingIn.setAngles(livingEntity, f, g, j, k, l);
-        VertexConsumer glintConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, RenderLayer.getEntityNoOutline(elytraTexture), false, elytra.hasGlint());
-        wingIn.render(matrixStackIn, glintConsumer, i, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
-
-        List<com.mojang.datafixers.util.Pair<BannerPattern, DyeColor>> list = BannerBlockEntity.method_24280(base, patterns);
-
-        for (int count = 0; count < 17 && count < list.size(); ++count)
-        {
-            Pair<BannerPattern, DyeColor> pair = list.get(count);
-            float[] afloat = pair.getSecond().getColorComponents();
-            SpriteIdentifier rendermaterial = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, CustomizableElytraItem.getTextureLocation(pair.getFirst()));
-            if (rendermaterial.getSprite().getId() != MissingSprite.getMissingSpriteId()) // Don't render missing banner patterns
-            {
-                wingIn.render(matrixStackIn, rendermaterial.getVertexConsumer(vertexConsumerProvider, RenderLayer::getEntityTranslucent), i, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);
-            }
-        }
+        return elytraTexture;
     }
 
     public boolean shouldRender(ItemStack stack, LivingEntity entity)
@@ -269,37 +101,6 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
     public Identifier getElytraTexture(ItemStack stack, T entity)
     {
         return TEXTURE_DYEABLE_ELYTRA;
-    }
-
-    public List<Float> getColors(ItemStack elytraIn)
-    {
-        ArrayList<Float> colorOut = new ArrayList<>();
-        if (elytraIn.getItem() == ModItems.CUSTOMIZABLE_ELYTRA)
-        {
-            int color = ((CustomizableElytraItem)elytraIn.getItem()).getColor(elytraIn);
-            float redValue = (float) (color >> 16 & 255) / 255.0F;
-            float greenValue = (float) (color >> 8 & 255) / 255.0F;
-            float blueValue = (float) (color & 255) / 255.0F;
-            colorOut.add(redValue);
-            colorOut.add(greenValue);
-            colorOut.add(blueValue);
-            return colorOut;
-        }
-        return null;
-    }
-
-    @NotNull
-    public List<Float> getColors(int color)
-    {
-        ArrayList<Float> colorOut = new ArrayList<>();
-        float redValue = (float) (color >> 16 & 255) / 255.0F;
-        float greenValue = (float) (color >> 8 & 255) / 255.0F;
-        float blueValue = (float) (color & 255) / 255.0F;
-        colorOut.add(redValue);
-        colorOut.add(greenValue);
-        colorOut.add(blueValue);
-        return colorOut;
-
     }
 
     public ItemStack getColytraSubItem(ItemStack stack)

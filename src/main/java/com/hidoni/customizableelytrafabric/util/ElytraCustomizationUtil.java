@@ -1,0 +1,41 @@
+package com.hidoni.customizableelytrafabric.util;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundTag;
+
+public class ElytraCustomizationUtil
+{
+    public static ElytraCustomizationData getData(ItemStack elytraIn)
+    {
+        if (elytraIn.getSubTag("display") != null)
+        {
+            return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Dye, new DyeCustomizationHandler(elytraIn));
+        }
+        else if (elytraIn.getSubTag("BlockEntityTag") != null)
+        {
+            return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Banner, new BannerCustomizationHandler(elytraIn));
+        }
+        else if (elytraIn.getSubTag("WingInfo") != null)
+        {
+            return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Split, new SplitCustomizationHandler(elytraIn));
+        }
+        return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.None, new CustomizationHandler());
+    }
+
+    public static ElytraCustomizationData getData(CompoundTag wingIn)
+    {
+        if (wingIn == null)
+        {
+            return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.None, new CustomizationHandler());
+        }
+        if (wingIn.contains("color"))
+        {
+            return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Dye, new DyeCustomizationHandler(wingIn));
+        }
+        else if (wingIn.contains("Patterns"))
+        {
+            return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Banner, new BannerCustomizationHandler(wingIn));
+        }
+        return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.None, new CustomizationHandler());
+    }
+}

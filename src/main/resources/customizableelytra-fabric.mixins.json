@@ -6,8 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "PlayerEntityRendererMixin",
-    "ArmorStandEntityRendererMixin"
+    "ArmorStandEntityRendererMixin",
+    "PlayerEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,7 @@
 package com.hidoni.customizableelytrafabric.item;
 
 import com.hidoni.customizableelytrafabric.CustomizableElytra;
+import com.hidoni.customizableelytrafabric.util.ElytraCustomizationUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BannerPattern;
@@ -31,17 +32,12 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
     @Override
     public int getColor(ItemStack stack)
     {
-        CompoundTag compoundTag = stack.getSubTag("display");
-        if (compoundTag != null)
-        {
-            return compoundTag.contains("color", 99) ? compoundTag.getInt("color") : 16777215;
-        }
-        compoundTag = stack.getSubTag("BlockEntityTag");
-        if (compoundTag != null)
-        {
-            return DyeColor.byId(compoundTag.getInt("Base")).getMaterialColor().color;
-        }
-        return 16777215;
+        return getColor(stack, 0);
+    }
+
+    public int getColor(ItemStack stack, int index)
+    {
+        return ElytraCustomizationUtil.getData(stack).handler.getColor(index);
     }
 
     @Override

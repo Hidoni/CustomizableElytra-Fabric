@@ -28,7 +28,7 @@ public class CustomizableElytra implements ClientModInitializer
 
         ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
         {
-            return tintIndex > 0 ? -1 : ((CustomizableElytraItem) stack.getItem()).getColor(stack);
+            return ((CustomizableElytraItem) stack.getItem()).getColor(stack, tintIndex);
         }, ModItems.CUSTOMIZABLE_ELYTRA);
         ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
         {

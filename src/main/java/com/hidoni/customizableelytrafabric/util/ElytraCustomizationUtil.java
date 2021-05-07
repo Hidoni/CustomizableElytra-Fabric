@@ -7,7 +7,7 @@ public class ElytraCustomizationUtil
 {
     public static ElytraCustomizationData getData(ItemStack elytraIn)
     {
-        if (elytraIn.getSubTag("display") != null)
+        if (elytraIn.getSubTag("display") != null && elytraIn.getSubTag("display").get("color") != null)
         {
             return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Dye, new DyeCustomizationHandler(elytraIn));
         }

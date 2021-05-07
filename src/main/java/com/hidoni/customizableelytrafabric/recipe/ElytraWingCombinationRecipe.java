@@ -107,7 +107,7 @@ public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe
 
     public CompoundTag convertWingToNBT(ItemStack wingIn)
     {
-        if (wingIn.getSubTag("display") != null)
+        if (wingIn.getSubTag("display") != null && wingIn.getSubTag("display").get("color") != null)
         {
             return wingIn.getSubTag("display");
         }

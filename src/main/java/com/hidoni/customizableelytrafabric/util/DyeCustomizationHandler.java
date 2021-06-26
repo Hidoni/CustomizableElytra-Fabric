@@ -31,6 +31,19 @@ public class DyeCustomizationHandler extends CustomizationHandler
         color = tagIn.getInt("color");
     }
 
+    @NotNull
+    public static List<Float> getColors(int color)
+    {
+        ArrayList<Float> colorOut = new ArrayList<>();
+        float redValue = (float) (color >> 16 & 255) / 255.0F;
+        float greenValue = (float) (color >> 8 & 255) / 255.0F;
+        float blueValue = (float) (color & 255) / 255.0F;
+        colorOut.add(redValue);
+        colorOut.add(greenValue);
+        colorOut.add(blueValue);
+        return colorOut;
+    }
+
     @Override
     public int getColor(int index)
     {
@@ -44,18 +57,5 @@ public class DyeCustomizationHandler extends CustomizationHandler
         renderModel.setAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         VertexConsumer ivertexbuilder = ItemRenderer.getArmorGlintConsumer(bufferIn, RenderLayer.getArmorCutoutNoCull(textureLocation), false, hasGlint);
         renderModel.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.DEFAULT_UV, colors.get(0), colors.get(1), colors.get(2), 1.0F);
-    }
-
-    @NotNull
-    public static List<Float> getColors(int color)
-    {
-        ArrayList<Float> colorOut = new ArrayList<>();
-        float redValue = (float) (color >> 16 & 255) / 255.0F;
-        float greenValue = (float) (color >> 8 & 255) / 255.0F;
-        float blueValue = (float) (color & 255) / 255.0F;
-        colorOut.add(redValue);
-        colorOut.add(greenValue);
-        colorOut.add(blueValue);
-        return colorOut;
     }
 }

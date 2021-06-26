@@ -1,7 +1,7 @@
 package com.hidoni.customizableelytrafabric.client.render.model;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.*;
+import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.AnimalModel;
 import net.minecraft.entity.LivingEntity;

@@ -44,9 +44,9 @@ public class BannerCustomizationHandler extends CustomizationHandler
     public int getColor(int index)
     {
         float[] colorComponents = patterns.get(0).getSecond().getColorComponents();
-        int red = (int)(colorComponents[0] * 255) << 16;
-        int green = (int)(colorComponents[1] * 255) << 8;
-        int blue = (int)(colorComponents[2] * 255);
+        int red = (int) (colorComponents[0] * 255) << 16;
+        int green = (int) (colorComponents[1] * 255) << 8;
+        int blue = (int) (colorComponents[2] * 255);
         return red | green | blue;
     }
 

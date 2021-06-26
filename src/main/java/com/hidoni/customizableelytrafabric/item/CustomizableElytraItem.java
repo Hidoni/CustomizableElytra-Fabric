@@ -29,6 +29,12 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
         super(settings);
     }
 
+    @Environment(EnvType.CLIENT)
+    public static Identifier getTextureLocation(BannerPattern bannerIn)
+    {
+        return new Identifier(CustomizableElytra.MOD_ID, "entity/elytra_banner/" + bannerIn.getName());
+    }
+
     @Override
     public int getColor(ItemStack stack)
     {
@@ -84,12 +90,6 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
                 applyWingTooltip(tooltip, context, leftWing);
             }
         }
-    }
-
-    @Environment(EnvType.CLIENT)
-    public static Identifier getTextureLocation(BannerPattern bannerIn)
-    {
-        return new Identifier(CustomizableElytra.MOD_ID, "entity/elytra_banner/" + bannerIn.getName());
     }
 
     @Override

@@ -26,19 +26,16 @@ import java.util.List;
 
 public class BannerCustomizationHandler extends CustomizationHandler
 {
-    private final int baseColor;
     private final List<Pair<BannerPattern, DyeColor>> patterns;
 
     public BannerCustomizationHandler(ItemStack itemIn)
     {
-        baseColor = itemIn.getOrCreateSubTag("BlockEntityTag").getInt("Base");
         patterns = BannerBlockEntity.getPatternsFromNbt(ShieldItem.getColor(itemIn), BannerBlockEntity.getPatternListTag(itemIn));
     }
 
     public BannerCustomizationHandler(NbtCompound tagIn)
     {
-        this.baseColor = tagIn.getInt("Base");
-        DyeColor dyeBaseColor = DyeColor.byId(this.baseColor);
+        DyeColor dyeBaseColor = DyeColor.byId(tagIn.getInt("Base"));
         NbtList patternsList = tagIn.getList("Patterns", 10).copy();
         patterns = BannerBlockEntity.getPatternsFromNbt(dyeBaseColor, patternsList);
     }
@@ -46,7 +43,11 @@ public class BannerCustomizationHandler extends CustomizationHandler
     @Override
     public int getColor(int index)
     {
-        return baseColor;
+        float[] colorComponents = patterns.get(0).getSecond().getColorComponents();
+        int red = (int)(colorComponents[0] * 255) << 16;
+        int green = (int)(colorComponents[1] * 255) << 8;
+        int blue = (int)(colorComponents[2] * 255);
+        return red | green | blue;
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.BannerItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
@@ -102,8 +102,8 @@ public class ElytraBannerRecipe extends SpecialCraftingRecipe
 
         if (!elytraItem.isEmpty())
         {
-            CompoundTag compoundnbt = bannerItem.getSubTag("BlockEntityTag");
-            CompoundTag compoundnbt1 = compoundnbt == null ? new CompoundTag() : compoundnbt.copy();
+            NbtCompound compoundnbt = bannerItem.getSubTag("BlockEntityTag");
+            NbtCompound compoundnbt1 = compoundnbt == null ? new NbtCompound() : compoundnbt.copy();
             compoundnbt1.putInt("Base", ((BannerItem) bannerItem.getItem()).getColor().getId());
             elytraItem.getOrCreateTag().put("BlockEntityTag", compoundnbt1);
             elytraItem.removeSubTag("display"); // Remove dye if it has one

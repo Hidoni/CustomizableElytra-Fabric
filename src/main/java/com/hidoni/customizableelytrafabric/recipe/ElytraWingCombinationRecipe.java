@@ -4,7 +4,7 @@ import com.hidoni.customizableelytrafabric.registry.ModItems;
 import com.hidoni.customizableelytrafabric.registry.ModRecipes;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
@@ -78,9 +78,9 @@ public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe
         }
 
         ItemStack customizedElytra = new ItemStack(ModItems.CUSTOMIZABLE_ELYTRA);
-        CompoundTag leftWingNBT = convertWingToNBT(leftWing);
-        CompoundTag rightWingNBT = convertWingToNBT(rightWing);
-        CompoundTag wingInfo = new CompoundTag();
+        NbtCompound leftWingNBT = convertWingToNBT(leftWing);
+        NbtCompound rightWingNBT = convertWingToNBT(rightWing);
+        NbtCompound wingInfo = new NbtCompound();
         if (leftWingNBT != null)
         {
             wingInfo.put("left", leftWingNBT);
@@ -105,7 +105,7 @@ public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe
         return ModRecipes.ELYTRA_WING_COMBINATION_RECIPE;
     }
 
-    public CompoundTag convertWingToNBT(ItemStack wingIn)
+    public NbtCompound convertWingToNBT(ItemStack wingIn)
     {
         if (wingIn.getSubTag("display") != null && wingIn.getSubTag("display").get("color") != null)
         {

@@ -1,17 +1,16 @@
 plugins {
-    id 'fabric-loom' version '0.6-SNAPSHOT'
+    id 'fabric-loom' version '0.8-SNAPSHOT'
     id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
-def caelus_version = "0.0.9-1.16.3"
-def trinkets_version = "2.6.7"
-def curios_version = "0.0.13-1.16.5"
+def caelus_version = "0.0.16-1.17"
+def trinkets_version = "3.0.0"
 
 dependencies {
     //to change the versions see the gradle.properties file
@@ -29,13 +28,8 @@ dependencies {
 processResources {
     inputs.property "version", project.version
 
-    from(sourceSets.main.resources.srcDirs) {
-        include "fabric.mod.json"
+    filesMatching("fabric.mod.json") {
         expand "version": project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude "fabric.mod.json"
     }
 }
 
@@ -84,17 +78,17 @@ repositories {
         url = "https://maven.theillusivec4.top"
     }
     maven {
-        url = "https://jitpack.io"
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
     }
     maven {
         name = "Ladysnake Libs"
-        url = 'https://dl.bintray.com/ladysnake/libs'
+        url = "https://ladysnake.jfrog.io/artifactory/mods"
     }
 
 }
 
 dependencies {
     modImplementation "top.theillusivec4.caelus:caelus-fabric:${caelus_version}"
-    modImplementation "com.github.emilyalexandra:trinkets:${trinkets_version}"
-    modImplementation "top.theillusivec4.curios:curios-fabric:${curios_version}"
+    modImplementation "dev.emi:trinkets:${trinkets_version}"
 }

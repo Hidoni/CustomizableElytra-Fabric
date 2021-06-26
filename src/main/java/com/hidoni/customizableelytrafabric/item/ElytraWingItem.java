@@ -5,7 +5,7 @@ import net.minecraft.item.BannerItem;
 import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.util.DyeColor;
 import net.minecraft.world.World;
@@ -23,7 +23,7 @@ public class ElytraWingItem extends Item implements DyeableItem
     @Override
     public int getColor(ItemStack stack)
     {
-        CompoundTag compoundTag = stack.getSubTag("display");
+        NbtCompound compoundTag = stack.getSubTag("display");
         if (compoundTag != null)
         {
             return compoundTag.contains("color", 99) ? compoundTag.getInt("color") : 16777215;
@@ -31,7 +31,7 @@ public class ElytraWingItem extends Item implements DyeableItem
         compoundTag = stack.getSubTag("BlockEntityTag");
         if (compoundTag != null)
         {
-            return DyeColor.byId(compoundTag.getInt("Base")).getMaterialColor().color;
+            return DyeColor.byId(compoundTag.getInt("Base")).getMapColor().color;
         }
         return 16777215;
     }
@@ -39,7 +39,7 @@ public class ElytraWingItem extends Item implements DyeableItem
     @Override
     public boolean hasColor(ItemStack stack)
     {
-        CompoundTag compoundTag = stack.getSubTag("BlockEntityTag");
+        NbtCompound compoundTag = stack.getSubTag("BlockEntityTag");
         return DyeableItem.super.hasColor(stack) || compoundTag != null;
     }
 
@@ -47,7 +47,7 @@ public class ElytraWingItem extends Item implements DyeableItem
     public void removeColor(ItemStack stack)
     {
         DyeableItem.super.removeColor(stack);
-        CompoundTag compoundTag = stack.getSubTag("BlockEntityTag");
+        NbtCompound compoundTag = stack.getSubTag("BlockEntityTag");
         if (compoundTag != null)
         {
             stack.removeSubTag("BlockEntityTag");

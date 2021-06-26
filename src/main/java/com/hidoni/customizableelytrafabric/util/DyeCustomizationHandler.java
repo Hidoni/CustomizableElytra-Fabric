@@ -9,7 +9,7 @@ import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,11 +22,11 @@ public class DyeCustomizationHandler extends CustomizationHandler
 
     public DyeCustomizationHandler(ItemStack itemIn)
     {
-        CompoundTag compoundNBT = itemIn.getSubTag("display");
+        NbtCompound compoundNBT = itemIn.getSubTag("display");
         color = compoundNBT.contains("color", 99) ? compoundNBT.getInt("color") : 16777215;
     }
 
-    public DyeCustomizationHandler(CompoundTag tagIn)
+    public DyeCustomizationHandler(NbtCompound tagIn)
     {
         color = tagIn.getInt("color");
     }

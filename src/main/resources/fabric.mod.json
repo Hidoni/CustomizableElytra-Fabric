@@ -25,9 +25,9 @@
     "customizableelytra-fabric.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.11.1",
+    "fabricloader": ">=0.11.6",
     "fabric": "*",
-    "minecraft": ">=1.16.4",
+    "minecraft": ">=1.17",
     "caelus": "*"
   }
 }

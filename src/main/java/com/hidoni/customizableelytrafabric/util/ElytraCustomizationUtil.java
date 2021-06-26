@@ -1,7 +1,7 @@
 package com.hidoni.customizableelytrafabric.util;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public class ElytraCustomizationUtil
 {
@@ -22,7 +22,7 @@ public class ElytraCustomizationUtil
         return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.None, new CustomizationHandler());
     }
 
-    public static ElytraCustomizationData getData(CompoundTag wingIn)
+    public static ElytraCustomizationData getData(NbtCompound wingIn)
     {
         if (wingIn == null)
         {

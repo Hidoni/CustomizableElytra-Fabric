@@ -17,8 +17,8 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
 
@@ -32,15 +32,15 @@ public class BannerCustomizationHandler extends CustomizationHandler
     public BannerCustomizationHandler(ItemStack itemIn)
     {
         baseColor = itemIn.getOrCreateSubTag("BlockEntityTag").getInt("Base");
-        patterns = BannerBlockEntity.method_24280(ShieldItem.getColor(itemIn), BannerBlockEntity.getPatternListTag(itemIn));
+        patterns = BannerBlockEntity.getPatternsFromNbt(ShieldItem.getColor(itemIn), BannerBlockEntity.getPatternListTag(itemIn));
     }
 
-    public BannerCustomizationHandler(CompoundTag tagIn)
+    public BannerCustomizationHandler(NbtCompound tagIn)
     {
         this.baseColor = tagIn.getInt("Base");
         DyeColor dyeBaseColor = DyeColor.byId(this.baseColor);
-        ListTag patternsList = tagIn.getList("Patterns", 10).copy();
-        patterns = BannerBlockEntity.method_24280(dyeBaseColor, patternsList);
+        NbtList patternsList = tagIn.getList("Patterns", 10).copy();
+        patterns = BannerBlockEntity.getPatternsFromNbt(dyeBaseColor, patternsList);
     }
 
     @Override

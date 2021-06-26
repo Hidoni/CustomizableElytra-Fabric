@@ -7,8 +7,8 @@ import net.fabricmc.api.Environment;
 import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
@@ -43,8 +43,8 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
     @Override
     public boolean hasColor(ItemStack stack)
     {
-        CompoundTag bannerTag = stack.getSubTag("BlockEntityTag");
-        CompoundTag wingTag = stack.getSubTag("WingInfo");
+        NbtCompound bannerTag = stack.getSubTag("BlockEntityTag");
+        NbtCompound wingTag = stack.getSubTag("WingInfo");
         return DyeableItem.super.hasColor(stack) || bannerTag != null || wingTag != null;
     }
 
@@ -52,7 +52,7 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
     public void removeColor(ItemStack stack)
     {
         DyeableItem.super.removeColor(stack);
-        CompoundTag compoundTag = stack.getSubTag("BlockEntityTag");
+        NbtCompound compoundTag = stack.getSubTag("BlockEntityTag");
         if (compoundTag != null)
         {
             stack.removeSubTag("BlockEntityTag");
@@ -68,19 +68,19 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context)
     {
         BannerItem.appendBannerTooltip(stack, tooltip);
-        CompoundTag wingInfo = stack.getSubTag("WingInfo");
+        NbtCompound wingInfo = stack.getSubTag("WingInfo");
         if (wingInfo != null)
         {
             if (wingInfo.contains("left"))
             {
                 tooltip.add(new TranslatableText(LEFT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                CompoundTag leftWing = wingInfo.getCompound("left");
+                NbtCompound leftWing = wingInfo.getCompound("left");
                 applyWingTooltip(tooltip, context, leftWing);
             }
             if (wingInfo.contains("right"))
             {
                 tooltip.add(new TranslatableText(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                CompoundTag leftWing = wingInfo.getCompound("right");
+                NbtCompound leftWing = wingInfo.getCompound("right");
                 applyWingTooltip(tooltip, context, leftWing);
             }
         }
@@ -89,10 +89,6 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
     @Environment(EnvType.CLIENT)
     public static Identifier getTextureLocation(BannerPattern bannerIn)
     {
-        /*if (Config.useLowQualityElytraBanners.get())
-        {
-            return new ResourceLocation(CustomizableElytra.MOD_ID, "entity/elytra_banner_low/" + bannerIn.getFileName());
-        }*/
         return new Identifier(CustomizableElytra.MOD_ID, "entity/elytra_banner/" + bannerIn.getName());
     }
 
@@ -102,7 +98,7 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
         return Items.ELYTRA.getTranslationKey();
     }
 
-    private void applyWingTooltip(List<Text> tooltip, TooltipContext context, CompoundTag wingIn)
+    private void applyWingTooltip(List<Text> tooltip, TooltipContext context, NbtCompound wingIn)
     {
         if (wingIn.contains("color"))
         {
@@ -117,11 +113,11 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
         }
         else if (wingIn.contains("Patterns"))
         {
-            ListTag listnbt = wingIn.getList("Patterns", 10);
+            NbtList listnbt = wingIn.getList("Patterns", 10);
 
             for (int i = 0; i < listnbt.size() && i < 6; ++i)
             {
-                CompoundTag patternNBT = listnbt.getCompound(i);
+                NbtCompound patternNBT = listnbt.getCompound(i);
                 DyeColor dyecolor = DyeColor.byId(patternNBT.getInt("Color"));
                 BannerPattern bannerpattern = BannerPattern.byId(patternNBT.getString("Pattern"));
                 if (bannerpattern != null)

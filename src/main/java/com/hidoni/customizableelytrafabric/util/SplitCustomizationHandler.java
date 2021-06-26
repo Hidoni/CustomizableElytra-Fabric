@@ -5,7 +5,7 @@ import net.minecraft.client.render.entity.model.AnimalModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public class SplitCustomizationHandler extends CustomizationHandler
 
     public SplitCustomizationHandler(ItemStack itemIn)
     {
-        CompoundTag wingTag = itemIn.getSubTag("WingInfo");
+        NbtCompound wingTag = itemIn.getSubTag("WingInfo");
         leftWing = ElytraCustomizationUtil.getData(wingTag.getCompound("left"));
         rightWing = ElytraCustomizationUtil.getData(wingTag.getCompound("right"));
     }

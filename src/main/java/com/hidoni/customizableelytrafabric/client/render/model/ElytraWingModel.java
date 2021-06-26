@@ -1,7 +1,7 @@
 package com.hidoni.customizableelytrafabric.client.render.model;
 
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.model.*;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.model.AnimalModel;
 import net.minecraft.entity.LivingEntity;
@@ -9,13 +9,21 @@ import net.minecraft.util.math.Vec3d;
 
 public class ElytraWingModel<T extends LivingEntity> extends AnimalModel<T>
 {
-    protected ModelPart wing = new ModelPart(this, 22, 0);
-    ;
+    private final ModelPart wing;
+    private final boolean is_right_wing;
 
-    public ElytraWingModel(boolean mirrored)
+
+    public ElytraWingModel(ModelPart root, boolean is_right_wing)
     {
-        wing.mirror = mirrored;
-        wing.addCuboid(mirrored ? 0 : -10.0F, 0.0F, 0.0F, 10.0F, 20.0F, 2.0F, 1.0F);
+        if (is_right_wing)
+        {
+            this.wing = root.getChild("right_wing");
+        }
+        else
+        {
+            this.wing = root.getChild("left_wing");
+        }
+        this.is_right_wing = is_right_wing;
     }
 
     @Override
@@ -60,9 +68,8 @@ public class ElytraWingModel<T extends LivingEntity> extends AnimalModel<T>
 
         this.wing.pivotX = 5.0F;
         this.wing.pivotY = m;
-        if (entity instanceof AbstractClientPlayerEntity)
+        if (entity instanceof AbstractClientPlayerEntity abstractClientPlayerEntity)
         {
-            AbstractClientPlayerEntity abstractClientPlayerEntity = (AbstractClientPlayerEntity) entity;
             abstractClientPlayerEntity.elytraPitch = (float) ((double) abstractClientPlayerEntity.elytraPitch + (double) (k - abstractClientPlayerEntity.elytraPitch) * 0.1D);
             abstractClientPlayerEntity.elytraYaw = (float) ((double) abstractClientPlayerEntity.elytraYaw + (double) (n - abstractClientPlayerEntity.elytraYaw) * 0.1D);
             abstractClientPlayerEntity.elytraRoll = (float) ((double) abstractClientPlayerEntity.elytraRoll + (double) (l - abstractClientPlayerEntity.elytraRoll) * 0.1D);
@@ -77,7 +84,7 @@ public class ElytraWingModel<T extends LivingEntity> extends AnimalModel<T>
             this.wing.yaw = n;
         }
 
-        if (this.wing.mirror)
+        if (this.is_right_wing)
         {
             this.wing.pivotX = -this.wing.pivotX;
             this.wing.yaw = -this.wing.yaw;

@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "customizableelytra-fabric",
   "version": "${version}",
-  "name": "Customizableelytra Fabric",
+  "name": "Customizable Elytra",
   "description": "Allows elytra to be dyed like leather armor and have banners placed on them like shields",
   "authors": [
     "Hidoni"

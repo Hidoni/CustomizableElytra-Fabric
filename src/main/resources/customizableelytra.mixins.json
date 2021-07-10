@@ -11,7 +11,8 @@
     "ElytraFeatureRendererAccessor",
     "PlayerEntityRendererMixin",
     "PlayerSkinTextureAccessor",
-    "PlayerSkinTextureInvoker"
+    "PlayerSkinTextureInvoker",
+    "ResourceTextureInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

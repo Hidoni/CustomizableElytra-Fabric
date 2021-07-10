@@ -30,14 +30,16 @@ public class BannerCustomizationHandler extends CustomizationHandler
 
     public BannerCustomizationHandler(ItemStack itemIn)
     {
-        patterns = BannerBlockEntity.getPatternsFromNbt(ShieldItem.getColor(itemIn), BannerBlockEntity.getPatternListTag(itemIn));
+        this(itemIn.getOrCreateTag());
     }
 
     public BannerCustomizationHandler(NbtCompound tagIn)
     {
-        DyeColor dyeBaseColor = DyeColor.byId(tagIn.getInt("Base"));
-        NbtList patternsList = tagIn.getList("Patterns", 10).copy();
-        patterns = BannerBlockEntity.getPatternsFromNbt(dyeBaseColor, patternsList);
+        super(tagIn.getBoolean("HideCapePattern"));
+        NbtCompound blockEntityTag = tagIn.getCompound("BlockEntityTag");
+        DyeColor baseColor = DyeColor.byId(blockEntityTag.getInt("Base"));
+        NbtList patternsList = blockEntityTag.getList("Patterns", 10).copy();
+        this.patterns = BannerBlockEntity.getPatternsFromNbt(baseColor, patternsList);
     }
 
     @Override
@@ -56,8 +58,9 @@ public class BannerCustomizationHandler extends CustomizationHandler
         renderModel.setAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         VertexConsumer ivertexbuilder = ItemRenderer.getDirectItemGlintConsumer(bufferIn, RenderLayer.getEntityNoOutline(textureLocation), false, hasGlint);
         renderModel.render(matrixStackIn, ivertexbuilder, packedLightIn, OverlayTexture.DEFAULT_UV, 1.0F, 1.0F, 1.0F, 1.0F);
-
-        for (int i = 0; i < 17 && i < patterns.size(); ++i)
+        float[] baseColor = patterns.get(0).getSecond().getColorComponents();
+        renderModel.render(matrixStackIn, ItemRenderer.getItemGlintConsumer(bufferIn, RenderLayer.getEntityTranslucent(textureLocation), false, false), packedLightIn, OverlayTexture.DEFAULT_UV, baseColor[0], baseColor[1], baseColor[2], 1.0F);
+        for (int i = 1; i < 17 && i < patterns.size(); ++i)
         {
             Pair<BannerPattern, DyeColor> pair = patterns.get(i);
             float[] afloat = pair.getSecond().getColorComponents();

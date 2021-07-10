@@ -59,7 +59,8 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
             {
                 ElytraEntityModel<T> elytraModel = ((ElytraFeatureRendererAccessor<T>) this).getElytraModel();
                 this.getContextModel().copyStateTo(elytraModel);
-                data.handler.render(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytraModel, getTextureWithCape(livingEntity, elytra), elytra.hasGlint());
+                Identifier elytraTexture = getTextureWithCape(livingEntity, elytra, data.handler.isWingCapeHidden(0));
+                data.handler.render(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytraModel, elytraTexture, elytra.hasGlint());
             }
             else
             {
@@ -68,16 +69,18 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
                 {
                     this.getContextModel().copyStateTo(model);
                 }
-                ((SplitCustomizationHandler) data.handler).render(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, models, getTextureWithCape(livingEntity, elytra), elytra.hasGlint());
+                Identifier leftWingTexture = getTextureWithCape(livingEntity, elytra, data.handler.isWingCapeHidden(0));
+                Identifier rightWingTexture = getTextureWithCape(livingEntity, elytra, data.handler.isWingCapeHidden(1));
+                ((SplitCustomizationHandler) data.handler).render(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, models, leftWingTexture, rightWingTexture, elytra.hasGlint());
             }
             matrixStack.pop();
         }
     }
 
-    private Identifier getTextureWithCape(T livingEntity, ItemStack elytra)
+    private Identifier getTextureWithCape(T livingEntity, ItemStack elytra, boolean capeHidden)
     {
         Identifier elytraTexture;
-        if (livingEntity instanceof AbstractClientPlayerEntity)
+        if (!capeHidden && livingEntity instanceof AbstractClientPlayerEntity)
         {
             AbstractClientPlayerEntity abstractclientplayerentity = (AbstractClientPlayerEntity) livingEntity;
             if (abstractclientplayerentity.canRenderElytraTexture() && abstractclientplayerentity.getElytraTexture() != null)

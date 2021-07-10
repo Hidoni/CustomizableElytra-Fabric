@@ -17,10 +17,19 @@ import net.minecraft.util.Identifier;
  */
 public class CustomizationHandler
 {
+    private final boolean wingCapeHidden;
+
+    public CustomizationHandler(boolean wingCapeHidden)
+    {
+        this.wingCapeHidden = wingCapeHidden;
+    }
+
     public int getColor(int index)
     {
         return 16777215;
     }
+
+    public boolean isWingCapeHidden(int index) {return wingCapeHidden;}
 
     @Environment(EnvType.CLIENT)
     public <T extends LivingEntity, M extends AnimalModel<T>> void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, M renderModel, Identifier textureLocation, boolean hasGlint)

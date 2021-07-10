@@ -22,13 +22,14 @@ public class DyeCustomizationHandler extends CustomizationHandler
 
     public DyeCustomizationHandler(ItemStack itemIn)
     {
-        NbtCompound compoundNBT = itemIn.getSubTag("display");
-        color = compoundNBT.contains("color", 99) ? compoundNBT.getInt("color") : 16777215;
+        this(itemIn.getOrCreateTag());
     }
 
     public DyeCustomizationHandler(NbtCompound tagIn)
     {
-        color = tagIn.getInt("color");
+        super(tagIn.getBoolean("HideCapePattern"));
+        NbtCompound childTag = tagIn.getCompound("display");
+        this.color = childTag.contains("color", 99) ? childTag.getInt("color") : 16777215;
     }
 
     @NotNull

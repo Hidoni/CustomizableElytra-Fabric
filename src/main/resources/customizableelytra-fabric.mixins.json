@@ -10,7 +10,8 @@
     "CapeFeatureRendererMixin",
     "ElytraFeatureRendererAccessor",
     "PlayerEntityRendererMixin",
-    "PlayerSkinTextureAccessor"
+    "PlayerSkinTextureAccessor",
+    "PlayerSkinTextureInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

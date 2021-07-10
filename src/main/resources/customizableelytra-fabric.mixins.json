@@ -9,7 +9,8 @@
     "ArmorStandEntityRendererMixin",
     "CapeFeatureRendererMixin",
     "ElytraFeatureRendererAccessor",
-    "PlayerEntityRendererMixin"
+    "PlayerEntityRendererMixin",
+    "PlayerSkinTextureAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

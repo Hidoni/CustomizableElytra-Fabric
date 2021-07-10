@@ -23,6 +23,7 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
 {
     public final static String LEFT_WING_TRANSLATION_KEY = "item.customizable_elytra.left_wing";
     public final static String RIGHT_WING_TRANSLATION_KEY = "item.customizable_elytra.right_wing";
+    public final static String HIDDEN_CAPE_TRANSLATION_KEY = "item.customizable_elytra.cape_hidden";
 
     public CustomizableElytraItem(Settings settings)
     {
@@ -73,6 +74,10 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context)
     {
+        if (stack.getOrCreateTag().getBoolean("HideCapePattern"))
+        {
+            tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+        }
         BannerItem.appendBannerTooltip(stack, tooltip);
         NbtCompound wingInfo = stack.getSubTag("WingInfo");
         if (wingInfo != null)
@@ -80,14 +85,22 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
             if (wingInfo.contains("left"))
             {
                 tooltip.add(new TranslatableText(LEFT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
+                if (wingInfo.getBoolean("HideCapePattern"))
+                {
+                    tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+                }
                 NbtCompound leftWing = wingInfo.getCompound("left");
                 applyWingTooltip(tooltip, context, leftWing);
             }
             if (wingInfo.contains("right"))
             {
                 tooltip.add(new TranslatableText(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                NbtCompound leftWing = wingInfo.getCompound("right");
-                applyWingTooltip(tooltip, context, leftWing);
+                if (wingInfo.getBoolean("HideCapePattern"))
+                {
+                    tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+                }
+                NbtCompound rightWing = wingInfo.getCompound("right");
+                applyWingTooltip(tooltip, context, rightWing);
             }
         }
     }

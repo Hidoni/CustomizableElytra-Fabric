@@ -1,0 +1,3 @@
+accessWidener	v1	named
+# TextureData access widener
+accessible	class	net/minecraft/client/texture/ResourceTexture$TextureData

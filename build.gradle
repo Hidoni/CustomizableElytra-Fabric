@@ -88,6 +88,10 @@ repositories {
 
 }
 
+minecraft {
+    accessWidener = file("src/main/resources/customizableelytra.accesswidener")
+}
+
 dependencies {
     modImplementation "top.theillusivec4.caelus:caelus-fabric:${caelus_version}"
     modImplementation "dev.emi:trinkets:${trinkets_version}"

@@ -1,5 +1,6 @@
 package com.hidoni.customizableelytrafabric.mixin;
 
+import com.hidoni.customizableelytrafabric.client.render.CustomizableElytraFeatureRenderer;
 import com.hidoni.customizableelytrafabric.registry.ModItems;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -18,7 +19,7 @@ public class CapeFeatureRendererMixin
     @Inject(at = @At(value = "HEAD"), method = "render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/network/AbstractClientPlayerEntity;FFFFFF)V", cancellable = true)
     public void preRenderCustomizableElytraCheck(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, AbstractClientPlayerEntity abstractClientPlayerEntity, float f, float g, float h, float j, float k, float l, CallbackInfo ci)
     {
-        ItemStack stack = abstractClientPlayerEntity.getEquippedStack(EquipmentSlot.CHEST);
+        ItemStack stack = CustomizableElytraFeatureRenderer.tryFindElytra(abstractClientPlayerEntity);
         if (stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA)
         {
             ci.cancel();

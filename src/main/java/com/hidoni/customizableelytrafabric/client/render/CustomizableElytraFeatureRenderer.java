@@ -100,7 +100,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         return elytraTexture;
     }
 
-    public boolean shouldRender(ItemStack stack, LivingEntity entity)
+    public static boolean shouldRender(ItemStack stack, LivingEntity entity)
     {
         return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA;
     }
@@ -110,7 +110,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         return TEXTURE_DYEABLE_ELYTRA;
     }
 
-    public ItemStack getColytraSubItem(ItemStack stack)
+    public static ItemStack getColytraSubItem(ItemStack stack)
     {
         NbtCompound colytraChestTag = stack.getSubTag("colytra:ElytraUpgrade");
         if (colytraChestTag != null)
@@ -124,7 +124,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         return ItemStack.EMPTY;
     }
 
-    public ItemStack tryFindElytra(LivingEntity entity)
+    public static ItemStack tryFindElytra(LivingEntity entity)
     {
         ItemStack elytra = entity.getEquippedStack(EquipmentSlot.CHEST);
         if (shouldRender(elytra, entity))

@@ -86,7 +86,7 @@ public class ElytraTextureUtil
         }
         convertTextureToGrayscale(texture);
         Identifier locationOut = new Identifier(CustomizableElytra.MOD_ID, "grayscale_" + locationIn.getPath());
-        MinecraftClient.getInstance().getTextureManager().registerDynamicTexture(locationOut.toString(), new NativeImageBackedTexture(texture));
+        locationOut = MinecraftClient.getInstance().getTextureManager().registerDynamicTexture(locationOut.toUnderscoreSeparatedString(), new NativeImageBackedTexture(texture));
         TEXTURE_CACHE.put(locationIn, locationOut);
         return locationOut;
     }

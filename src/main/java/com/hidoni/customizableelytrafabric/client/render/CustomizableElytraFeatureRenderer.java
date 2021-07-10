@@ -7,6 +7,7 @@ import com.hidoni.customizableelytrafabric.mixin.ElytraFeatureRendererAccessor;
 import com.hidoni.customizableelytrafabric.registry.ModItems;
 import com.hidoni.customizableelytrafabric.util.ElytraCustomizationData;
 import com.hidoni.customizableelytrafabric.util.ElytraCustomizationUtil;
+import com.hidoni.customizableelytrafabric.util.ElytraTextureUtil;
 import com.hidoni.customizableelytrafabric.util.SplitCustomizationHandler;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketComponent;
@@ -81,11 +82,11 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
             AbstractClientPlayerEntity abstractclientplayerentity = (AbstractClientPlayerEntity) livingEntity;
             if (abstractclientplayerentity.canRenderElytraTexture() && abstractclientplayerentity.getElytraTexture() != null)
             {
-                elytraTexture = abstractclientplayerentity.getElytraTexture();
+                elytraTexture = ElytraTextureUtil.getGrayscale(abstractclientplayerentity.getElytraTexture());
             }
             else if (abstractclientplayerentity.canRenderCapeTexture() && abstractclientplayerentity.getCapeTexture() != null && abstractclientplayerentity.isPartVisible(PlayerModelPart.CAPE))
             {
-                elytraTexture = abstractclientplayerentity.getCapeTexture();
+                elytraTexture = ElytraTextureUtil.getGrayscale(abstractclientplayerentity.getCapeTexture());
             }
             else
             {

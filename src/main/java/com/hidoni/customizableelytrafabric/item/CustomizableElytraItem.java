@@ -84,23 +84,29 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
         {
             if (wingInfo.contains("left"))
             {
-                tooltip.add(new TranslatableText(LEFT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                if (wingInfo.getBoolean("HideCapePattern"))
-                {
-                    tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
-                }
                 NbtCompound leftWing = wingInfo.getCompound("left");
-                applyWingTooltip(tooltip, context, leftWing);
+                if (!leftWing.isEmpty())
+                {
+                    tooltip.add(new TranslatableText(LEFT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
+                    if (leftWing.getBoolean("HideCapePattern"))
+                    {
+                        tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+                    }
+                    applyWingTooltip(tooltip, context, leftWing);
+                }
             }
             if (wingInfo.contains("right"))
             {
-                tooltip.add(new TranslatableText(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                if (wingInfo.getBoolean("HideCapePattern"))
-                {
-                    tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
-                }
                 NbtCompound rightWing = wingInfo.getCompound("right");
-                applyWingTooltip(tooltip, context, rightWing);
+                if (!rightWing.isEmpty())
+                {
+                    tooltip.add(new TranslatableText(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
+                    if (rightWing.getBoolean("HideCapePattern"))
+                    {
+                        tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+                    }
+                    applyWingTooltip(tooltip, context, rightWing);
+                }
             }
         }
     }
@@ -113,20 +119,23 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
 
     private void applyWingTooltip(List<Text> tooltip, TooltipContext context, NbtCompound wingIn)
     {
-        if (wingIn.contains("color"))
+        NbtCompound wing = ElytraCustomizationUtil.migrateOldSplitWingFormat(wingIn);
+        if (wing.contains("display"))
         {
+            NbtCompound displayTag = wing.getCompound("display");
             if (context.isAdvanced())
             {
-                tooltip.add((new TranslatableText("item.color", String.format("#%06X", wingIn.getInt("color")))).formatted(Formatting.GRAY));
+                tooltip.add((new TranslatableText("item.color", String.format("#%06X", displayTag.getInt("color")))).formatted(Formatting.GRAY));
             }
             else
             {
                 tooltip.add((new TranslatableText("item.dyed")).formatted(Formatting.GRAY, Formatting.ITALIC));
             }
         }
-        else if (wingIn.contains("Patterns"))
+        else if (wing.contains("BlockEntityTag"))
         {
-            NbtList listnbt = wingIn.getList("Patterns", 10);
+            NbtCompound blockEntityTag = wingIn.getCompound("BlockEntityTag");
+            NbtList listnbt = blockEntityTag.getList("Patterns", 10);
 
             for (int i = 0; i < listnbt.size() && i < 6; ++i)
             {

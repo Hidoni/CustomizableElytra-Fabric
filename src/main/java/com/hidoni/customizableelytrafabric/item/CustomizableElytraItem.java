@@ -19,91 +19,73 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CustomizableElytraItem extends ElytraItem implements DyeableItem
-{
+public class CustomizableElytraItem extends ElytraItem implements DyeableItem {
     public final static String LEFT_WING_TRANSLATION_KEY = "item.customizableelytra.left_wing";
     public final static String RIGHT_WING_TRANSLATION_KEY = "item.customizableelytra.right_wing";
     public final static String HIDDEN_CAPE_TRANSLATION_KEY = "item.customizableelytra.cape_hidden";
 
-    public CustomizableElytraItem(Settings settings)
-    {
+    public CustomizableElytraItem(Settings settings) {
         super(settings);
     }
 
     @Environment(EnvType.CLIENT)
-    public static Identifier getTextureLocation(BannerPattern bannerIn)
-    {
+    public static Identifier getTextureLocation(BannerPattern bannerIn) {
         return new Identifier(CustomizableElytra.MOD_ID, "entity/elytra_banner/" + bannerIn.getName());
     }
 
     @Override
-    public int getColor(ItemStack stack)
-    {
+    public int getColor(ItemStack stack) {
         return getColor(stack, 0);
     }
 
-    public int getColor(ItemStack stack, int index)
-    {
+    public int getColor(ItemStack stack, int index) {
         return ElytraCustomizationUtil.getData(stack).handler.getColor(index);
     }
 
     @Override
-    public boolean hasColor(ItemStack stack)
-    {
+    public boolean hasColor(ItemStack stack) {
         CompoundTag bannerTag = stack.getSubTag("BlockEntityTag");
         CompoundTag wingTag = stack.getSubTag("WingInfo");
-        return DyeableItem.super.hasColor(stack) || bannerTag != null || wingTag != null|| stack.getOrCreateTag().getBoolean("HideCapePattern");
+        return DyeableItem.super.hasColor(stack) || bannerTag != null || wingTag != null || stack.getOrCreateTag().getBoolean("HideCapePattern");
     }
 
     @Override
-    public void removeColor(ItemStack stack)
-    {
+    public void removeColor(ItemStack stack) {
         DyeableItem.super.removeColor(stack);
         CompoundTag compoundTag = stack.getSubTag("BlockEntityTag");
-        if (compoundTag != null)
-        {
+        if (compoundTag != null) {
             stack.removeSubTag("BlockEntityTag");
         }
         compoundTag = stack.getSubTag("WingInfo");
-        if (compoundTag != null)
-        {
+        if (compoundTag != null) {
             stack.removeSubTag("WingInfo");
         }
         stack.getOrCreateTag().remove("HideCapePattern");
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context)
-    {
-        if (stack.getOrCreateTag().getBoolean("HideCapePattern"))
-        {
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (stack.getOrCreateTag().getBoolean("HideCapePattern")) {
             tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
         }
         BannerItem.appendBannerTooltip(stack, tooltip);
         CompoundTag wingInfo = stack.getSubTag("WingInfo");
-        if (wingInfo != null)
-        {
-            if (wingInfo.contains("left"))
-            {
+        if (wingInfo != null) {
+            if (wingInfo.contains("left")) {
                 CompoundTag leftWing = wingInfo.getCompound("left");
-                if (!leftWing.isEmpty())
-                {
+                if (!leftWing.isEmpty()) {
                     tooltip.add(new TranslatableText(LEFT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                    if (leftWing.getBoolean("HideCapePattern"))
-                    {
+                    if (leftWing.getBoolean("HideCapePattern")) {
                         tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
                     }
                     applyWingTooltip(tooltip, context, leftWing);
                 }
             }
-            if (wingInfo.contains("right"))
-            {
+            if (wingInfo.contains("right")) {
                 CompoundTag rightWing = wingInfo.getCompound("right");
-                if (!rightWing.isEmpty())
-                {
+                if (!rightWing.isEmpty()) {
                     tooltip.add(new TranslatableText(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                    if (rightWing.getBoolean("HideCapePattern"))
-                    {
+                    if (rightWing.getBoolean("HideCapePattern")) {
                         tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
                     }
                     applyWingTooltip(tooltip, context, rightWing);
@@ -113,38 +95,28 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
     }
 
     @Override
-    public String getTranslationKey()
-    {
+    public String getTranslationKey() {
         return Items.ELYTRA.getTranslationKey();
     }
 
-    private void applyWingTooltip(List<Text> tooltip, TooltipContext context, CompoundTag wingIn)
-    {
+    private void applyWingTooltip(List<Text> tooltip, TooltipContext context, CompoundTag wingIn) {
         CompoundTag wing = ElytraCustomizationUtil.migrateOldSplitWingFormat(wingIn);
-        if (wing.contains("display"))
-        {
+        if (wing.contains("display")) {
             CompoundTag displayTag = wing.getCompound("display");
-            if (context.isAdvanced())
-            {
+            if (context.isAdvanced()) {
                 tooltip.add((new TranslatableText("item.color", String.format("#%06X", displayTag.getInt("color")))).formatted(Formatting.GRAY));
-            }
-            else
-            {
+            } else {
                 tooltip.add((new TranslatableText("item.dyed")).formatted(Formatting.GRAY, Formatting.ITALIC));
             }
-        }
-        else if (wing.contains("BlockEntityTag"))
-        {
+        } else if (wing.contains("BlockEntityTag")) {
             CompoundTag blockEntityTag = wing.getCompound("BlockEntityTag");
             ListTag listnbt = blockEntityTag.getList("Patterns", 10);
 
-            for (int i = 0; i < listnbt.size() && i < 6; ++i)
-            {
+            for (int i = 0; i < listnbt.size() && i < 6; ++i) {
                 CompoundTag patternNBT = listnbt.getCompound(i);
                 DyeColor dyecolor = DyeColor.byId(patternNBT.getInt("Color"));
                 BannerPattern bannerpattern = BannerPattern.byId(patternNBT.getString("Pattern"));
-                if (bannerpattern != null)
-                {
+                if (bannerpattern != null) {
                     tooltip.add((new TranslatableText("block.minecraft.banner." + bannerpattern.getName() + '.' + dyecolor.getName())).formatted(Formatting.GRAY));
                 }
             }

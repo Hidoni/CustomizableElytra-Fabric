@@ -27,38 +27,65 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
-public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends EntityModel<T>> extends ElytraFeatureRenderer<T, M>
-{
+public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends EntityModel<T>> extends ElytraFeatureRenderer<T, M> {
     private static final Identifier TEXTURE_DYEABLE_ELYTRA = new Identifier(CustomizableElytra.MOD_ID, "textures/entity/elytra.png");
     private final ElytraWingModel<T> leftWing = new ElytraWingModel<>(false);
     private final ElytraWingModel<T> rightWing = new ElytraWingModel<>(true);
 
-    public CustomizableElytraFeatureRenderer(FeatureRendererContext<T, M> featureRendererContext)
-    {
+    public CustomizableElytraFeatureRenderer(FeatureRendererContext<T, M> featureRendererContext) {
         super(featureRendererContext);
     }
 
+    public static boolean shouldRender(ItemStack stack, LivingEntity entity) {
+        return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA;
+    }
+
+    public static ItemStack getColytraSubItem(ItemStack stack) {
+        CompoundTag colytraChestTag = stack.getSubTag("colytra:ElytraUpgrade");
+        if (colytraChestTag != null) {
+            ItemStack elytraStack = ItemStack.fromTag(colytraChestTag);
+            if (elytraStack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA) {
+                return elytraStack;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
+    public static ItemStack tryFindElytra(LivingEntity entity) {
+        ItemStack elytra = entity.getEquippedStack(EquipmentSlot.CHEST);
+        if (shouldRender(elytra, entity)) {
+            return elytra;
+        }
+        if (com.hidoni.customizableelytrafabric.CustomizableElytra.caleusLoaded) {
+            elytra = getColytraSubItem(elytra);
+            if (elytra != ItemStack.EMPTY) {
+                return elytra;
+            }
+        }
+        if (com.hidoni.customizableelytrafabric.CustomizableElytra.trinketsLoaded && entity instanceof PlayerEntity) {
+            elytra = TrinketsApi.getTrinketComponent((PlayerEntity) entity).getStack("chest", "cape");
+            if (elytra.getItem() == ModItems.CUSTOMIZABLE_ELYTRA) {
+                return elytra;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
+
     @Override
-    public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, T livingEntity, float f, float g, float h, float j, float k, float l)
-    {
+    public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, T livingEntity, float f, float g, float h, float j, float k, float l) {
         ItemStack elytra = tryFindElytra(livingEntity);
-        if (elytra != ItemStack.EMPTY)
-        {
+        if (elytra != ItemStack.EMPTY) {
             matrixStack.push();
             matrixStack.translate(0.0D, 0.0D, 0.125D);
             ElytraCustomizationData data = ElytraCustomizationUtil.getData(elytra);
-            if (data.type != ElytraCustomizationData.CustomizationType.Split)
-            {
+            if (data.type != ElytraCustomizationData.CustomizationType.Split) {
                 ElytraEntityModel<T> elytraModel = ((ElytraFeatureRendererAccessor<T>) this).getElytraModel();
                 this.getContextModel().copyStateTo(elytraModel);
                 Identifier elytraTexture = getTextureWithCape(livingEntity, elytra.getTag(), data.handler.isWingCapeHidden(0));
                 data.handler.render(matrixStack, vertexConsumerProvider, light, livingEntity, f, g, h, j, k, l, elytraModel, elytraTexture, elytra.hasGlint());
-            }
-            else
-            {
+            } else {
                 List<ElytraWingModel<T>> models = ImmutableList.of(leftWing, rightWing);
-                for (ElytraWingModel<T> model : models)
-                {
+                for (ElytraWingModel<T> model : models) {
                     this.getContextModel().copyStateTo(model);
                 }
                 CompoundTag wingInfo = elytra.getSubTag("WingInfo");
@@ -70,83 +97,27 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         }
     }
 
-    private Identifier getTextureWithCape(T livingEntity, CompoundTag customizationTag, boolean capeHidden)
-    {
+    private Identifier getTextureWithCape(T livingEntity, CompoundTag customizationTag, boolean capeHidden) {
         Identifier elytraTexture;
-        if (!capeHidden && livingEntity instanceof AbstractClientPlayerEntity)
-        {
+        if (!capeHidden && livingEntity instanceof AbstractClientPlayerEntity) {
             AbstractClientPlayerEntity abstractclientplayerentity = (AbstractClientPlayerEntity) livingEntity;
-            if (abstractclientplayerentity.canRenderElytraTexture() && abstractclientplayerentity.getElytraTexture() != null)
-            {
+            if (abstractclientplayerentity.canRenderElytraTexture() && abstractclientplayerentity.getElytraTexture() != null) {
                 elytraTexture = ElytraTextureUtil.getGrayscale(abstractclientplayerentity.getElytraTexture());
-            }
-            else if (abstractclientplayerentity.canRenderCapeTexture() && abstractclientplayerentity.getCapeTexture() != null && abstractclientplayerentity.isPartVisible(PlayerModelPart.CAPE))
-            {
+            } else if (abstractclientplayerentity.canRenderCapeTexture() && abstractclientplayerentity.getCapeTexture() != null && abstractclientplayerentity.isPartVisible(PlayerModelPart.CAPE)) {
                 elytraTexture = ElytraTextureUtil.getGrayscale(abstractclientplayerentity.getCapeTexture());
-            }
-            else
-            {
+            } else {
                 elytraTexture = getElytraTexture(customizationTag, livingEntity);
             }
-        }
-        else
-        {
+        } else {
             elytraTexture = getElytraTexture(customizationTag, livingEntity);
         }
         return elytraTexture;
     }
 
-    public static boolean shouldRender(ItemStack stack, LivingEntity entity)
-    {
-        return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA;
-    }
-
-    public Identifier getElytraTexture(CompoundTag customizationTag, T entity)
-    {
-        if (ElytraCustomizationUtil.getData(customizationTag).type != ElytraCustomizationData.CustomizationType.None)
-        {
+    public Identifier getElytraTexture(CompoundTag customizationTag, T entity) {
+        if (ElytraCustomizationUtil.getData(customizationTag).type != ElytraCustomizationData.CustomizationType.None) {
             return TEXTURE_DYEABLE_ELYTRA;
         }
-        return ((ElytraFeatureRendererAccessor<T>)this).getElytraTexture();
-    }
-
-    public static ItemStack getColytraSubItem(ItemStack stack)
-    {
-        CompoundTag colytraChestTag = stack.getSubTag("colytra:ElytraUpgrade");
-        if (colytraChestTag != null)
-        {
-            ItemStack elytraStack = ItemStack.fromTag(colytraChestTag);
-            if (elytraStack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA)
-            {
-                return elytraStack;
-            }
-        }
-        return ItemStack.EMPTY;
-    }
-
-    public static ItemStack tryFindElytra(LivingEntity entity)
-    {
-        ItemStack elytra = entity.getEquippedStack(EquipmentSlot.CHEST);
-        if (shouldRender(elytra, entity))
-        {
-            return elytra;
-        }
-        if (com.hidoni.customizableelytrafabric.CustomizableElytra.caleusLoaded)
-        {
-            elytra = getColytraSubItem(elytra);
-            if (elytra != ItemStack.EMPTY)
-            {
-                return elytra;
-            }
-        }
-        if (com.hidoni.customizableelytrafabric.CustomizableElytra.trinketsLoaded && entity instanceof PlayerEntity)
-        {
-            elytra = TrinketsApi.getTrinketComponent((PlayerEntity) entity).getStack("chest", "cape");
-            if (elytra.getItem() == ModItems.CUSTOMIZABLE_ELYTRA)
-            {
-                return elytra;
-            }
-        }
-        return ItemStack.EMPTY;
+        return ((ElytraFeatureRendererAccessor<T>) this).getElytraTexture();
     }
 }

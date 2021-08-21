@@ -12,16 +12,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ArmorStandEntityRenderer.class)
-public abstract class ArmorStandEntityRendererMixin extends LivingEntityRenderer<ArmorStandEntity, ArmorStandArmorEntityModel>
-{
-    public ArmorStandEntityRendererMixin(EntityRenderDispatcher dispatcher, ArmorStandArmorEntityModel model, float shadowRadius)
-    {
+public abstract class ArmorStandEntityRendererMixin extends LivingEntityRenderer<ArmorStandEntity, ArmorStandArmorEntityModel> {
+    public ArmorStandEntityRendererMixin(EntityRenderDispatcher dispatcher, ArmorStandArmorEntityModel model, float shadowRadius) {
         super(dispatcher, model, shadowRadius);
     }
 
-    @Inject(at=@At("RETURN"), method= "<init>(Lnet/minecraft/client/render/entity/EntityRenderDispatcher;)V")
-    private void postConstructor(CallbackInfo callbackInfo)
-    {
+    @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/client/render/entity/EntityRenderDispatcher;)V")
+    private void postConstructor(CallbackInfo callbackInfo) {
         this.addFeature(new CustomizableElytraFeatureRenderer<>(this));
     }
 }

@@ -23,51 +23,46 @@ import top.theillusivec4.caelus.api.CaelusApi;
 import java.util.UUID;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity
-{
+public abstract class LivingEntityMixin extends Entity {
     private static final EntityAttributeModifier FLIGHT_MODIFIER = new EntityAttributeModifier(UUID.fromString("618325f1-cecb-4349-b210-0cb6604d52d0"), "Customizable elytra chestplate flight", 1.0D, EntityAttributeModifier.Operation.ADDITION);
+    @Shadow
+    protected int roll;
 
-    public LivingEntityMixin(EntityType<?> type, World world)
-    {
+    public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
 
-    @Shadow public abstract boolean hasStatusEffect(StatusEffect effect);
+    @Shadow
+    public abstract boolean hasStatusEffect(StatusEffect effect);
 
-    @Shadow public abstract ItemStack getEquippedStack(EquipmentSlot slot);
+    @Shadow
+    public abstract ItemStack getEquippedStack(EquipmentSlot slot);
 
-    @Shadow protected int roll;
-
-    @Shadow @Nullable public abstract EntityAttributeInstance getAttributeInstance(EntityAttribute attribute);
+    @Shadow
+    @Nullable
+    public abstract EntityAttributeInstance getAttributeInstance(EntityAttribute attribute);
 
     @Inject(at = @At("HEAD"), method = "initAi()V")
-    public void handleCustomizableElytraTick(CallbackInfo ci)
-    {
+    public void handleCustomizableElytraTick(CallbackInfo ci) {
         ItemStack itemStack = this.getEquippedStack(EquipmentSlot.CHEST);
         EntityAttributeInstance attributeInstance = this.getAttributeInstance(CaelusApi.ELYTRA_FLIGHT);
-        if (attributeInstance != null)
-        {
+        if (attributeInstance != null) {
             attributeInstance.removeModifier(FLIGHT_MODIFIER);
         }
-        if (itemStack.getItem() instanceof CustomizableElytraItem)
-        {
+        if (itemStack.getItem() instanceof CustomizableElytraItem) {
             handleFlightTick(itemStack);
             checkAndEnableFlight(itemStack, attributeInstance);
         }
     }
 
-    private void handleFlightTick(ItemStack itemStack)
-    {
+    private void handleFlightTick(ItemStack itemStack) {
         boolean isFlying = this.getFlag(7);
-        if (isFlying && !this.onGround && !this.hasVehicle() && !this.hasStatusEffect(StatusEffects.LEVITATION))
-        {
+        if (isFlying && !this.onGround && !this.hasVehicle() && !this.hasStatusEffect(StatusEffects.LEVITATION)) {
             {
                 int i = this.roll + 1;
-                if (!this.world.isClient && i % 10 == 0)
-                {
+                if (!this.world.isClient && i % 10 == 0) {
                     int j = i / 10;
-                    if (j % 2 == 0)
-                    {
+                    if (j % 2 == 0) {
                         itemStack.damage(1, (LivingEntity) (Object) this, (player) ->
                         {
                             player.sendEquipmentBreakStatus(EquipmentSlot.CHEST);
@@ -78,10 +73,8 @@ public abstract class LivingEntityMixin extends Entity
         }
     }
 
-    private void checkAndEnableFlight(ItemStack itemStack, EntityAttributeInstance attributeInstance)
-    {
-        if (attributeInstance != null)
-        {
+    private void checkAndEnableFlight(ItemStack itemStack, EntityAttributeInstance attributeInstance) {
+        if (attributeInstance != null) {
             attributeInstance.removeModifier(FLIGHT_MODIFIER);
             if (CustomizableElytraItem.isUsable(itemStack)) {
                 attributeInstance.addTemporaryModifier(FLIGHT_MODIFIER);

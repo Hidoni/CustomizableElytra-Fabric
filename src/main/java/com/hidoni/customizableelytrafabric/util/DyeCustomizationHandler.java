@@ -16,25 +16,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DyeCustomizationHandler extends CustomizationHandler
-{
+public class DyeCustomizationHandler extends CustomizationHandler {
     private final int color;
 
-    public DyeCustomizationHandler(ItemStack itemIn)
-    {
+    public DyeCustomizationHandler(ItemStack itemIn) {
         this(itemIn.getOrCreateTag());
     }
 
-    public DyeCustomizationHandler(CompoundTag tagIn)
-    {
+    public DyeCustomizationHandler(CompoundTag tagIn) {
         super(tagIn.getBoolean("HideCapePattern"));
         CompoundTag childTag = tagIn.getCompound("display");
         this.color = childTag.contains("color", 99) ? childTag.getInt("color") : 16777215;
     }
 
     @NotNull
-    public static List<Float> getColors(int color)
-    {
+    public static List<Float> getColors(int color) {
         ArrayList<Float> colorOut = new ArrayList<>();
         float redValue = (float) (color >> 16 & 255) / 255.0F;
         float greenValue = (float) (color >> 8 & 255) / 255.0F;
@@ -46,14 +42,12 @@ public class DyeCustomizationHandler extends CustomizationHandler
     }
 
     @Override
-    public int getColor(int index)
-    {
+    public int getColor(int index) {
         return color;
     }
 
     @Override
-    public <T extends LivingEntity, M extends AnimalModel<T>> void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, M renderModel, Identifier textureLocation, boolean hasGlint)
-    {
+    public <T extends LivingEntity, M extends AnimalModel<T>> void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, M renderModel, Identifier textureLocation, boolean hasGlint) {
         List<Float> colors = getColors(color);
         renderModel.setAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
         VertexConsumer ivertexbuilder = ItemRenderer.getArmorGlintConsumer(bufferIn, RenderLayer.getArmorCutoutNoCull(textureLocation), false, hasGlint);

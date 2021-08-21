@@ -3,38 +3,30 @@ package com.hidoni.customizableelytrafabric.util;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 
-public class ElytraCustomizationUtil
-{
-    public static ElytraCustomizationData getData(ItemStack elytraIn)
-    {
-        if (elytraIn.getSubTag("WingInfo") != null)
-        {
+public class ElytraCustomizationUtil {
+    public static ElytraCustomizationData getData(ItemStack elytraIn) {
+        if (elytraIn.getSubTag("WingInfo") != null) {
             return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Split, new SplitCustomizationHandler(elytraIn));
         }
         return getData(elytraIn.getTag());
     }
 
-    /*
+    /**
      * Before version 1.5, Crafting wings separately only stored the value of a tag, i.e. only the color sub-tag of
      * the display tag, after 1.5 this is no longer viable due to the ability to hide cape patterns, and data-fixers
      * don't work with mods, so this function had to be implemented as a fix.
      */
-    public static CompoundTag migrateOldSplitWingFormat(CompoundTag wingIn)
-    {
-        if (wingIn == null)
-        {
+    public static CompoundTag migrateOldSplitWingFormat(CompoundTag wingIn) {
+        if (wingIn == null) {
             return new CompoundTag();
         }
-        if (wingIn.contains("color", 99))
-        {
+        if (wingIn.contains("color", 99)) {
             CompoundTag newNBT = new CompoundTag();
             CompoundTag displayNBT = new CompoundTag();
             displayNBT.putInt("color", wingIn.getInt("color"));
             newNBT.put("display", displayNBT);
             return newNBT;
-        }
-        else if (wingIn.contains("Patterns", 9))
-        {
+        } else if (wingIn.contains("Patterns", 9)) {
             CompoundTag newNBT = new CompoundTag();
             CompoundTag blockEntityTagNBT = new CompoundTag();
             blockEntityTagNBT.put("Patterns", wingIn.getList("Patterns", 10));
@@ -45,15 +37,11 @@ public class ElytraCustomizationUtil
         return wingIn;
     }
 
-    public static ElytraCustomizationData getData(CompoundTag wingIn)
-    {
+    public static ElytraCustomizationData getData(CompoundTag wingIn) {
         CompoundTag wingNBT = migrateOldSplitWingFormat(wingIn);
-        if (wingNBT.contains("display") && wingNBT.getCompound("display").contains("color"))
-        {
+        if (wingNBT.contains("display") && wingNBT.getCompound("display").contains("color")) {
             return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Dye, new DyeCustomizationHandler(wingNBT));
-        }
-        else if (wingNBT.contains("BlockEntityTag"))
-        {
+        } else if (wingNBT.contains("BlockEntityTag")) {
             return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Banner, new BannerCustomizationHandler(wingNBT));
         }
         return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.None, new CustomizationHandler(wingNBT.getBoolean("HideCapePattern")));

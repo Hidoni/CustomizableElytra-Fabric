@@ -15,16 +15,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ElytraTextureUtil
-{
+public class ElytraTextureUtil {
     private static final Map<Identifier, Identifier> TEXTURE_CACHE = new HashMap<>();
 
-    private static void convertTextureToGrayscale(NativeImage nativeImage)
-    {
-        for (int x = 0; x < nativeImage.getWidth(); x++)
-        {
-            for (int y = 0; y < nativeImage.getHeight(); y++)
-            {
+    private static void convertTextureToGrayscale(NativeImage nativeImage) {
+        for (int x = 0; x < nativeImage.getWidth(); x++) {
+            for (int y = 0; y < nativeImage.getHeight(); y++) {
                 int pixelRGBA = nativeImage.getPixelColor(x, y);
                 int originalRGB = pixelRGBA & 0xFFFFFF;
                 int grayscale = (((originalRGB & 0xFF0000) >> 16) + ((originalRGB & 0xFF00) >> 8) + (originalRGB & 0xFF)) / 3;
@@ -34,55 +30,39 @@ public class ElytraTextureUtil
         }
     }
 
-    private static NativeImage getNativeImageFromTexture(Identifier locationIn)
-    {
+    private static NativeImage getNativeImageFromTexture(Identifier locationIn) {
         AbstractTexture texture = MinecraftClient.getInstance().getTextureManager().getTexture(locationIn);
-        if (texture instanceof NativeImageBackedTexture)
-        {
-            NativeImageBackedTexture dynamicTexture = (NativeImageBackedTexture)texture;
+        if (texture instanceof NativeImageBackedTexture) {
+            NativeImageBackedTexture dynamicTexture = (NativeImageBackedTexture) texture;
             NativeImage dynamicTextureImage = dynamicTexture.getImage();
-            if (dynamicTextureImage != null)
-            {
+            if (dynamicTextureImage != null) {
                 NativeImage returnTexture = new NativeImage(dynamicTextureImage.getWidth(), dynamicTextureImage.getHeight(), false);
                 returnTexture.copyFrom(dynamicTextureImage);
                 return returnTexture;
             }
-        }
-        else if (texture instanceof PlayerSkinTexture)
-        {
+        } else if (texture instanceof PlayerSkinTexture) {
             File cacheFile = ((PlayerSkinTextureAccessor) texture).getCacheFile();
-            if (cacheFile != null)
-            {
-                try
-                {
+            if (cacheFile != null) {
+                try {
                     return ((PlayerSkinTextureInvoker) texture).callLoadTexture(new FileInputStream(cacheFile));
-                }
-                catch (FileNotFoundException e)
-                {
+                } catch (FileNotFoundException e) {
                     return null;
                 }
             }
             return null;
-        }
-        else if (texture instanceof ResourceTexture)
-        {
-            try
-            {
+        } else if (texture instanceof ResourceTexture) {
+            try {
                 return ((ResourceTextureInvoker) texture).callLoadTextureData(MinecraftClient.getInstance().getResourceManager()).getImage();
-            }
-            catch (IOException e)
-            {
+            } catch (IOException e) {
                 return null;
             }
         }
         return null;
     }
 
-    private static Identifier createGrayscaleTexture(Identifier locationIn)
-    {
+    private static Identifier createGrayscaleTexture(Identifier locationIn) {
         NativeImage texture = getNativeImageFromTexture(locationIn);
-        if (texture == null)
-        {
+        if (texture == null) {
             return locationIn;
         }
         convertTextureToGrayscale(texture);
@@ -92,10 +72,8 @@ public class ElytraTextureUtil
         return locationOut;
     }
 
-    public static Identifier getGrayscale(Identifier locationIn)
-    {
-        if (!TEXTURE_CACHE.containsKey(locationIn))
-        {
+    public static Identifier getGrayscale(Identifier locationIn) {
+        if (!TEXTURE_CACHE.containsKey(locationIn)) {
             return createGrayscaleTexture(locationIn);
         }
         return TEXTURE_CACHE.get(locationIn);

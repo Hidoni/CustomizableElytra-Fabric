@@ -53,7 +53,7 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
     {
         NbtCompound bannerTag = stack.getSubTag("BlockEntityTag");
         NbtCompound wingTag = stack.getSubTag("WingInfo");
-        return DyeableItem.super.hasColor(stack) || bannerTag != null || wingTag != null;
+        return DyeableItem.super.hasColor(stack) || bannerTag != null || wingTag != null || stack.getTag().getInt("WingLightLevel") > 0 || stack.getTag().getBoolean("HideCapePattern");
     }
 
     @Override
@@ -70,6 +70,8 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
         {
             stack.removeSubTag("WingInfo");
         }
+        stack.getOrCreateTag().remove("HideCapePattern");
+        stack.getOrCreateTag().remove("WingLightLevel");
     }
 
     @Override

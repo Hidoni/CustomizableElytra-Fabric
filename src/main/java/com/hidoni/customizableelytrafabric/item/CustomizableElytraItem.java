@@ -134,7 +134,7 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
         }
         else if (wing.contains("BlockEntityTag"))
         {
-            NbtCompound blockEntityTag = wingIn.getCompound("BlockEntityTag");
+            NbtCompound blockEntityTag = wing.getCompound("BlockEntityTag");
             NbtList listnbt = blockEntityTag.getList("Patterns", 10);
 
             for (int i = 0; i < listnbt.size() && i < 6; ++i)

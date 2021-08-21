@@ -59,7 +59,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
             {
                 ElytraEntityModel<T> elytraModel = ((ElytraFeatureRendererAccessor<T>) this).getElytraModel();
                 this.getContextModel().copyStateTo(elytraModel);
-                Identifier elytraTexture = getTextureWithCape(livingEntity, elytra, data.handler.isWingCapeHidden(0));
+                Identifier elytraTexture = getTextureWithCape(livingEntity, elytra.getTag(), data.handler.isWingCapeHidden(0));
                 data.handler.render(matrixStack, vertexConsumerProvider, light, livingEntity, f, g, h, j, k, l, elytraModel, elytraTexture, elytra.hasGlint());
             }
             else
@@ -69,15 +69,16 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
                 {
                     this.getContextModel().copyStateTo(model);
                 }
-                Identifier leftWingTexture = getTextureWithCape(livingEntity, elytra, data.handler.isWingCapeHidden(0));
-                Identifier rightWingTexture = getTextureWithCape(livingEntity, elytra, data.handler.isWingCapeHidden(1));
+                NbtCompound wingInfo = elytra.getSubTag("WingInfo");
+                Identifier leftWingTexture = getTextureWithCape(livingEntity, wingInfo.getCompound("left"), data.handler.isWingCapeHidden(0));
+                Identifier rightWingTexture = getTextureWithCape(livingEntity, wingInfo.getCompound("right"), data.handler.isWingCapeHidden(1));
                 ((SplitCustomizationHandler) data.handler).render(matrixStack, vertexConsumerProvider, light, livingEntity, f, g, h, j, k, l, models, leftWingTexture, rightWingTexture, elytra.hasGlint());
             }
             matrixStack.pop();
         }
     }
 
-    private Identifier getTextureWithCape(T livingEntity, ItemStack elytra, boolean capeHidden)
+    private Identifier getTextureWithCape(T livingEntity, NbtCompound customizationTag, boolean capeHidden)
     {
         Identifier elytraTexture;
         if (!capeHidden && livingEntity instanceof AbstractClientPlayerEntity)
@@ -93,12 +94,12 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
             }
             else
             {
-                elytraTexture = getElytraTexture(elytra, livingEntity);
+                elytraTexture = getElytraTexture(customizationTag, livingEntity);
             }
         }
         else
         {
-            elytraTexture = getElytraTexture(elytra, livingEntity);
+            elytraTexture = getElytraTexture(customizationTag, livingEntity);
         }
         return elytraTexture;
     }
@@ -108,9 +109,13 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
         return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA;
     }
 
-    public Identifier getElytraTexture(ItemStack stack, T entity)
+    public Identifier getElytraTexture(NbtCompound customizationTag, T entity)
     {
-        return TEXTURE_DYEABLE_ELYTRA;
+        if (ElytraCustomizationUtil.getData(customizationTag).type != ElytraCustomizationData.CustomizationType.None)
+        {
+            return TEXTURE_DYEABLE_ELYTRA;
+        }
+        return ((ElytraFeatureRendererAccessor<T>)this).getElytraTexture();
     }
 
     public static ItemStack getColytraSubItem(ItemStack stack)

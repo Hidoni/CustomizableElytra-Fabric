@@ -18,10 +18,12 @@ import net.minecraft.util.Identifier;
 public class CustomizationHandler
 {
     private final boolean wingCapeHidden;
+    private final int wingLightLevel;
 
-    public CustomizationHandler(boolean wingCapeHidden)
+    public CustomizationHandler(boolean wingCapeHidden, int wingLightLevel)
     {
         this.wingCapeHidden = wingCapeHidden;
+        this.wingLightLevel = wingLightLevel;
     }
 
     public int getColor(int index)
@@ -30,6 +32,13 @@ public class CustomizationHandler
     }
 
     public boolean isWingCapeHidden(int index) {return wingCapeHidden;}
+
+    public int modifyWingLight(int lightLevel, int index) {
+        if (wingLightLevel != 0) {
+            lightLevel |= 0xFF;
+        }
+        return lightLevel;
+    }
 
     @Environment(EnvType.CLIENT)
     public <T extends LivingEntity, M extends AnimalModel<T>> void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, M renderModel, Identifier textureLocation, boolean hasGlint)

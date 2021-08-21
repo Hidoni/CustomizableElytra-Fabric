@@ -16,7 +16,6 @@ import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.DyeColor;
@@ -35,7 +34,7 @@ public class BannerCustomizationHandler extends CustomizationHandler
 
     public BannerCustomizationHandler(NbtCompound tagIn)
     {
-        super(tagIn.getBoolean("HideCapePattern"));
+        super(tagIn.getBoolean("HideCapePattern"), tagIn.getInt("WingLightLevel"));
         NbtCompound blockEntityTag = tagIn.getCompound("BlockEntityTag");
         DyeColor baseColor = DyeColor.byId(blockEntityTag.getInt("Base"));
         NbtList patternsList = blockEntityTag.getList("Patterns", 10).copy();

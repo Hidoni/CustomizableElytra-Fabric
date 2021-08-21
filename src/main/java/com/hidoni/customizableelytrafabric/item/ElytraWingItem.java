@@ -63,7 +63,9 @@ public class ElytraWingItem extends Item implements DyeableItem
         {
             tooltip.add(new TranslatableText(CustomizableElytraItem.HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
         }
+        if (stack.getOrCreateTag().getInt("WingLightLevel") > 0) {
+            tooltip.add(new TranslatableText(CustomizableElytraItem.GLOWING_WING_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+        }
         BannerItem.appendBannerTooltip(stack, tooltip);
     }
-
 }

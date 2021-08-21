@@ -21,9 +21,10 @@ import java.util.List;
 
 public class CustomizableElytraItem extends ElytraItem implements DyeableItem
 {
-    public final static String LEFT_WING_TRANSLATION_KEY = "item.customizable_elytra.left_wing";
-    public final static String RIGHT_WING_TRANSLATION_KEY = "item.customizable_elytra.right_wing";
-    public final static String HIDDEN_CAPE_TRANSLATION_KEY = "item.customizable_elytra.cape_hidden";
+    public final static String LEFT_WING_TRANSLATION_KEY = "item.customizableelytra.left_wing";
+    public final static String RIGHT_WING_TRANSLATION_KEY = "item.customizableelytra.right_wing";
+    public final static String HIDDEN_CAPE_TRANSLATION_KEY = "item.customizableelytra.cape_hidden";
+    public final static String GLOWING_WING_TRANSLATION_KEY = "item.customizableelytra.glowing_wing";
 
     public CustomizableElytraItem(Settings settings)
     {
@@ -78,6 +79,10 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
         {
             tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
         }
+        if (stack.getOrCreateTag().getInt("WingLightLevel") > 0)
+        {
+            tooltip.add(new TranslatableText(GLOWING_WING_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+        }
         BannerItem.appendBannerTooltip(stack, tooltip);
         NbtCompound wingInfo = stack.getSubTag("WingInfo");
         if (wingInfo != null)
@@ -92,6 +97,9 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
                     {
                         tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
                     }
+                    if (leftWing.getInt("WingLightLevel") > 0) {
+                        tooltip.add(new TranslatableText(GLOWING_WING_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+                    }
                     applyWingTooltip(tooltip, context, leftWing);
                 }
             }
@@ -104,6 +112,9 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem
                     if (rightWing.getBoolean("HideCapePattern"))
                     {
                         tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+                    }
+                    if (rightWing.getInt("WingLightLevel") > 0) {
+                        tooltip.add(new TranslatableText(GLOWING_WING_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
                     }
                     applyWingTooltip(tooltip, context, rightWing);
                 }

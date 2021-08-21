@@ -4,6 +4,7 @@ import com.hidoni.customizableelytrafabric.CustomizableElytra;
 import com.hidoni.customizableelytrafabric.item.CustomizableElytraItem;
 import com.hidoni.customizableelytrafabric.item.ElytraWingItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.block.cauldron.CauldronBehavior;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -21,6 +22,7 @@ public class ModItems
 
     public static void register()
     {
-
+        CauldronBehavior.WATER_CAULDRON_BEHAVIOR.put(CUSTOMIZABLE_ELYTRA, CauldronBehavior.CLEAN_DYEABLE_ITEM);
+        CauldronBehavior.WATER_CAULDRON_BEHAVIOR.put(ELYTRA_WING, CauldronBehavior.CLEAN_DYEABLE_ITEM);
     }
 }

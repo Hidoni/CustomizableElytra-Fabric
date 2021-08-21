@@ -8,8 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 import java.io.InputStream;
 
 @Mixin(PlayerSkinTexture.class)
-public interface PlayerSkinTextureInvoker
-{
+public interface PlayerSkinTextureInvoker {
     @Invoker("loadTexture")
     NativeImage callLoadTexture(InputStream inputStreamIn);
 }

@@ -6,8 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(ResourceTexture.class)
-public interface ResourceTextureInvoker
-{
+public interface ResourceTextureInvoker {
     @Invoker("loadTextureData")
     ResourceTexture.TextureData callLoadTextureData(ResourceManager resourceManager);
 }

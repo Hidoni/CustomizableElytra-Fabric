@@ -14,13 +14,11 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
-public class CustomizableElytra implements ClientModInitializer
-{
+public class CustomizableElytra implements ClientModInitializer {
     public static String MOD_ID = "customizableelytra";
 
     @Override
-    public void onInitializeClient()
-    {
+    public void onInitializeClient() {
         FabricModelPredicateProviderRegistry.register(ModItems.CUSTOMIZABLE_ELYTRA, new Identifier(MOD_ID, "broken_elytra"), ((stack, world, entity, seed) ->
         {
             return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA && CustomizableElytraItem.isUsable(stack) ? 0.0F : 1.0F;
@@ -37,8 +35,7 @@ public class CustomizableElytra implements ClientModInitializer
 
         ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) ->
         {
-            for (BannerPattern pattern : BannerPattern.values())
-            {
+            for (BannerPattern pattern : BannerPattern.values()) {
                 Identifier textureIdentifier = CustomizableElytraItem.getTextureLocation(pattern);
                 registry.register(textureIdentifier);
             }

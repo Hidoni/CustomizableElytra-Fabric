@@ -13,16 +13,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntityRenderer.class)
-public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>>
-{
-    public PlayerEntityRendererMixin(EntityRendererFactory.Context ctx, boolean slim)
-    {
+public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
+    public PlayerEntityRendererMixin(EntityRendererFactory.Context ctx, boolean slim) {
         super(ctx, new PlayerEntityModel(ctx.getPart(slim ? EntityModelLayers.PLAYER_SLIM : EntityModelLayers.PLAYER), slim), 0.5F);
     }
 
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/client/render/entity/EntityRendererFactory$Context;Z)V")
-    private void postConstructor(EntityRendererFactory.Context context, boolean slim, CallbackInfo callbackInfo)
-    {
+    private void postConstructor(EntityRendererFactory.Context context, boolean slim, CallbackInfo callbackInfo) {
         this.addFeature(new CustomizableElytraFeatureRenderer<>(this, context.getModelLoader()));
     }
 }

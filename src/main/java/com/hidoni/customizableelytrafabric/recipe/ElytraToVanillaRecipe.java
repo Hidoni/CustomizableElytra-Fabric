@@ -11,25 +11,19 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class ElytraToVanillaRecipe extends SpecialCraftingRecipe
-{
-    public ElytraToVanillaRecipe(Identifier id)
-    {
+public class ElytraToVanillaRecipe extends SpecialCraftingRecipe {
+    public ElytraToVanillaRecipe(Identifier id) {
         super(id);
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World world)
-    {
+    public boolean matches(CraftingInventory inv, World world) {
         ItemStack elytraItem = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.size(); ++i)
-        {
+        for (int i = 0; i < inv.size(); ++i) {
             ItemStack inventoryItem = inv.getStack(i);
-            if (!inv.isEmpty())
-            {
-                if (!elytraItem.isEmpty() || !(inventoryItem.getItem() instanceof CustomizableElytraItem))
-                {
+            if (!inv.isEmpty()) {
+                if (!elytraItem.isEmpty() || !(inventoryItem.getItem() instanceof CustomizableElytraItem)) {
                     return false;
                 }
                 elytraItem = inventoryItem;
@@ -40,17 +34,13 @@ public class ElytraToVanillaRecipe extends SpecialCraftingRecipe
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv)
-    {
+    public ItemStack craft(CraftingInventory inv) {
         ItemStack elytraItem = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.size(); ++i)
-        {
+        for (int i = 0; i < inv.size(); ++i) {
             ItemStack inventoryItem = inv.getStack(i);
-            if (!inv.isEmpty())
-            {
-                if (!elytraItem.isEmpty() || !(inventoryItem.getItem() instanceof CustomizableElytraItem))
-                {
+            if (!inv.isEmpty()) {
+                if (!elytraItem.isEmpty() || !(inventoryItem.getItem() instanceof CustomizableElytraItem)) {
                     return ItemStack.EMPTY;
                 }
                 elytraItem = inventoryItem;
@@ -59,8 +49,7 @@ public class ElytraToVanillaRecipe extends SpecialCraftingRecipe
 
         ItemStack vanillaElytraItem = new ItemStack(Items.ELYTRA, 1);
         EnchantmentHelper.set(EnchantmentHelper.get(elytraItem), vanillaElytraItem);
-        if (elytraItem.hasCustomName())
-        {
+        if (elytraItem.hasCustomName()) {
             vanillaElytraItem.setCustomName(elytraItem.getName());
         }
         vanillaElytraItem.setDamage(elytraItem.getDamage());
@@ -69,14 +58,12 @@ public class ElytraToVanillaRecipe extends SpecialCraftingRecipe
     }
 
     @Override
-    public boolean fits(int width, int height)
-    {
+    public boolean fits(int width, int height) {
         return width * height >= 2;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer()
-    {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.ELYTRA_TO_VANILLA_RECIPE;
     }
 }

@@ -7,8 +7,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.io.File;
 
 @Mixin(PlayerSkinTexture.class)
-public interface PlayerSkinTextureAccessor
-{
+public interface PlayerSkinTextureAccessor {
     @Accessor("cacheFile")
     File getCacheFile();
 }

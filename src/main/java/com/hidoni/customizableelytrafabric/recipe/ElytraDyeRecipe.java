@@ -16,37 +16,27 @@ import net.minecraft.world.World;
 
 import java.util.List;
 
-public class ElytraDyeRecipe extends SpecialCraftingRecipe
-{
-    public ElytraDyeRecipe(Identifier id)
-    {
+public class ElytraDyeRecipe extends SpecialCraftingRecipe {
+    public ElytraDyeRecipe(Identifier id) {
         super(id);
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World world)
-    {
+    public boolean matches(CraftingInventory inv, World world) {
         ItemStack elytraItem = ItemStack.EMPTY;
         List<ItemStack> list = Lists.newArrayList();
 
-        for (int i = 0; i < inv.size(); ++i)
-        {
+        for (int i = 0; i < inv.size(); ++i) {
             ItemStack inventoryItem = inv.getStack(i);
-            if (!inventoryItem.isEmpty())
-            {
-                if (inventoryItem.getItem() == Items.ELYTRA)
-                {
-                    if (!elytraItem.isEmpty())
-                    {
+            if (!inventoryItem.isEmpty()) {
+                if (inventoryItem.getItem() == Items.ELYTRA) {
+                    if (!elytraItem.isEmpty()) {
                         return false;
                     }
 
                     elytraItem = inventoryItem;
-                }
-                else
-                {
-                    if (!(inventoryItem.getItem() instanceof DyeItem))
-                    {
+                } else {
+                    if (!(inventoryItem.getItem() instanceof DyeItem)) {
                         return false;
                     }
 
@@ -59,29 +49,21 @@ public class ElytraDyeRecipe extends SpecialCraftingRecipe
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv)
-    {
+    public ItemStack craft(CraftingInventory inv) {
         ItemStack elytraItem = ItemStack.EMPTY;
         List<DyeItem> list = Lists.newArrayList();
 
-        for (int i = 0; i < inv.size(); ++i)
-        {
+        for (int i = 0; i < inv.size(); ++i) {
             ItemStack inventoryItem = inv.getStack(i);
-            if (!inventoryItem.isEmpty())
-            {
-                if (inventoryItem.getItem() == Items.ELYTRA)
-                {
-                    if (!elytraItem.isEmpty())
-                    {
+            if (!inventoryItem.isEmpty()) {
+                if (inventoryItem.getItem() == Items.ELYTRA) {
+                    if (!elytraItem.isEmpty()) {
                         return ItemStack.EMPTY;
                     }
 
                     elytraItem = inventoryItem;
-                }
-                else
-                {
-                    if (!(inventoryItem.getItem() instanceof DyeItem))
-                    {
+                } else {
+                    if (!(inventoryItem.getItem() instanceof DyeItem)) {
                         return ItemStack.EMPTY;
                     }
 
@@ -92,8 +74,7 @@ public class ElytraDyeRecipe extends SpecialCraftingRecipe
 
         ItemStack customizableElytraItem = new ItemStack(ModItems.CUSTOMIZABLE_ELYTRA, elytraItem.getCount());
         EnchantmentHelper.set(EnchantmentHelper.get(elytraItem), customizableElytraItem);
-        if (elytraItem.hasCustomName())
-        {
+        if (elytraItem.hasCustomName()) {
             customizableElytraItem.setCustomName(elytraItem.getName());
         }
         customizableElytraItem.setDamage(elytraItem.getDamage());
@@ -102,14 +83,12 @@ public class ElytraDyeRecipe extends SpecialCraftingRecipe
     }
 
     @Override
-    public boolean fits(int width, int height)
-    {
+    public boolean fits(int width, int height) {
         return width * height >= 2;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer()
-    {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.ELYTRA_DYE_RECIPE;
     }
 }

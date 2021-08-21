@@ -11,8 +11,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 
-public class ModItems
-{
+public class ModItems {
     public static final Item CUSTOMIZABLE_ELYTRA = Registry.register(Registry.ITEM, new Identifier(CustomizableElytra.MOD_ID, "customizable_elytra"), new CustomizableElytraItem(new FabricItemSettings().maxDamage(432).rarity(Rarity.UNCOMMON).equipmentSlot((stack ->
     {
         return EquipmentSlot.CHEST;
@@ -20,8 +19,7 @@ public class ModItems
 
     public static final Item ELYTRA_WING = Registry.register(Registry.ITEM, new Identifier(CustomizableElytra.MOD_ID, "elytra_wing"), new ElytraWingItem(new FabricItemSettings().rarity(Rarity.UNCOMMON)));
 
-    public static void register()
-    {
+    public static void register() {
         CauldronBehavior.WATER_CAULDRON_BEHAVIOR.put(CUSTOMIZABLE_ELYTRA, CauldronBehavior.CLEAN_DYEABLE_ITEM);
         CauldronBehavior.WATER_CAULDRON_BEHAVIOR.put(ELYTRA_WING, CauldronBehavior.CLEAN_DYEABLE_ITEM);
     }

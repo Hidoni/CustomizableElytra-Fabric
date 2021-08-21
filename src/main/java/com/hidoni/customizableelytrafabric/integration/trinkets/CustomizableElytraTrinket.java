@@ -13,19 +13,15 @@ import top.theillusivec4.caelus.api.CaelusApi;
 
 import java.util.UUID;
 
-public class CustomizableElytraTrinket implements Trinket
-{
+public class CustomizableElytraTrinket implements Trinket {
     private static final EntityAttributeModifier FLIGHT_MODIFIER = new EntityAttributeModifier(UUID.fromString("a34b6e10-c28d-4a11-b131-ae54b505298b"), "Customizable elytra trinket flight", 1.0D, EntityAttributeModifier.Operation.ADDITION);
 
     @Override
-    public void tick(ItemStack stack, SlotReference slot, LivingEntity entity)
-    {
+    public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
         int i = entity.getRoll() + 1;
-        if (!entity.world.isClient && i % 10 == 0)
-        {
+        if (!entity.world.isClient && i % 10 == 0) {
             int j = i / 10;
-            if (j % 2 == 0)
-            {
+            if (j % 2 == 0) {
                 stack.damage(1, entity, (player) ->
                 {
                     TrinketsApi.onTrinketBroken(stack, slot, entity);
@@ -36,25 +32,19 @@ public class CustomizableElytraTrinket implements Trinket
         }
 
         EntityAttributeInstance flightAttributeInstance = entity.getAttributeInstance(CaelusApi.getInstance().getFlightAttribute());
-        if (CustomizableElytraItem.isUsable(stack))
-        {
-            if (flightAttributeInstance != null && !flightAttributeInstance.hasModifier(FLIGHT_MODIFIER))
-            {
+        if (CustomizableElytraItem.isUsable(stack)) {
+            if (flightAttributeInstance != null && !flightAttributeInstance.hasModifier(FLIGHT_MODIFIER)) {
                 flightAttributeInstance.addTemporaryModifier(FLIGHT_MODIFIER);
             }
-        }
-        else
-        {
+        } else {
             flightAttributeInstance.removeModifier(FLIGHT_MODIFIER);
         }
     }
 
     @Override
-    public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity)
-    {
+    public void onUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
         EntityAttributeInstance flightAttributeInstance = entity.getAttributeInstance(CaelusApi.getInstance().getFlightAttribute());
-        if (flightAttributeInstance != null)
-        {
+        if (flightAttributeInstance != null) {
             flightAttributeInstance.removeModifier(FLIGHT_MODIFIER);
         }
     }

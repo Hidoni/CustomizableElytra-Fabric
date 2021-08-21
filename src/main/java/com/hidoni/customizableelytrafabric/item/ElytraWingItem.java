@@ -15,43 +15,35 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ElytraWingItem extends Item implements DyeableItem
-{
-    public ElytraWingItem(Settings settings)
-    {
+public class ElytraWingItem extends Item implements DyeableItem {
+    public ElytraWingItem(Settings settings) {
         super(settings);
     }
 
     @Override
-    public int getColor(ItemStack stack)
-    {
+    public int getColor(ItemStack stack) {
         NbtCompound compoundTag = stack.getSubTag("display");
-        if (compoundTag != null)
-        {
+        if (compoundTag != null) {
             return compoundTag.contains("color", 99) ? compoundTag.getInt("color") : 16777215;
         }
         compoundTag = stack.getSubTag("BlockEntityTag");
-        if (compoundTag != null)
-        {
+        if (compoundTag != null) {
             return DyeColor.byId(compoundTag.getInt("Base")).getMapColor().color;
         }
         return 16777215;
     }
 
     @Override
-    public boolean hasColor(ItemStack stack)
-    {
+    public boolean hasColor(ItemStack stack) {
         NbtCompound compoundTag = stack.getSubTag("BlockEntityTag");
         return DyeableItem.super.hasColor(stack) || compoundTag != null || stack.getTag().getInt("WingLightLevel") > 0 || stack.getTag().getBoolean("HideCapePattern");
     }
 
     @Override
-    public void removeColor(ItemStack stack)
-    {
+    public void removeColor(ItemStack stack) {
         DyeableItem.super.removeColor(stack);
         NbtCompound compoundTag = stack.getSubTag("BlockEntityTag");
-        if (compoundTag != null)
-        {
+        if (compoundTag != null) {
             stack.removeSubTag("BlockEntityTag");
         }
         stack.getOrCreateTag().remove("HideCapePattern");
@@ -59,10 +51,8 @@ public class ElytraWingItem extends Item implements DyeableItem
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context)
-    {
-        if (stack.getOrCreateTag().getBoolean("HideCapePattern"))
-        {
+    public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+        if (stack.getOrCreateTag().getBoolean("HideCapePattern")) {
             tooltip.add(new TranslatableText(CustomizableElytraItem.HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
         }
         if (stack.getOrCreateTag().getInt("WingLightLevel") > 0) {

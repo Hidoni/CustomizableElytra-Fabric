@@ -10,35 +10,25 @@ import net.minecraft.recipe.SpecialCraftingRecipe;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe
-{
-    public ElytraWingCombinationRecipe(Identifier id)
-    {
+public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe {
+    public ElytraWingCombinationRecipe(Identifier id) {
         super(id);
     }
 
     @Override
-    public boolean matches(CraftingInventory inv, World world)
-    {
+    public boolean matches(CraftingInventory inv, World world) {
         ItemStack leftWing = ItemStack.EMPTY;
         ItemStack rightWing = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.size(); ++i)
-        {
+        for (int i = 0; i < inv.size(); ++i) {
             ItemStack inventoryItem = inv.getStack(i);
-            if (!inventoryItem.isEmpty())
-            {
-                if (inventoryItem.getItem() == ModItems.ELYTRA_WING)
-                {
-                    if (leftWing == ItemStack.EMPTY)
-                    {
+            if (!inventoryItem.isEmpty()) {
+                if (inventoryItem.getItem() == ModItems.ELYTRA_WING) {
+                    if (leftWing == ItemStack.EMPTY) {
                         leftWing = inventoryItem;
-                    }
-                    else if (rightWing == ItemStack.EMPTY)
-                    {
+                    } else if (rightWing == ItemStack.EMPTY) {
                         rightWing = inventoryItem;
-                    }
-                    else // We've already found two items.
+                    } else // We've already found two items.
                     {
                         return false;
                     }
@@ -49,27 +39,19 @@ public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inv)
-    {
+    public ItemStack craft(CraftingInventory inv) {
         ItemStack leftWing = ItemStack.EMPTY;
         ItemStack rightWing = ItemStack.EMPTY;
 
-        for (int i = 0; i < inv.size(); ++i)
-        {
+        for (int i = 0; i < inv.size(); ++i) {
             ItemStack inventoryItem = inv.getStack(i);
-            if (!inventoryItem.isEmpty())
-            {
-                if (inventoryItem.getItem() == ModItems.ELYTRA_WING)
-                {
-                    if (leftWing == ItemStack.EMPTY)
-                    {
+            if (!inventoryItem.isEmpty()) {
+                if (inventoryItem.getItem() == ModItems.ELYTRA_WING) {
+                    if (leftWing == ItemStack.EMPTY) {
                         leftWing = inventoryItem;
-                    }
-                    else if (rightWing == ItemStack.EMPTY)
-                    {
+                    } else if (rightWing == ItemStack.EMPTY) {
                         rightWing = inventoryItem;
-                    }
-                    else // We've already found two items.
+                    } else // We've already found two items.
                     {
                         return ItemStack.EMPTY;
                     }
@@ -81,12 +63,10 @@ public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe
         NbtCompound leftWingNBT = convertWingToNBT(leftWing);
         NbtCompound rightWingNBT = convertWingToNBT(rightWing);
         NbtCompound wingInfo = new NbtCompound();
-        if (leftWingNBT != null)
-        {
+        if (leftWingNBT != null) {
             wingInfo.put("left", leftWingNBT);
         }
-        if (rightWingNBT != null)
-        {
+        if (rightWingNBT != null) {
             wingInfo.put("right", rightWingNBT);
         }
         customizedElytra.putSubTag("WingInfo", wingInfo);
@@ -94,19 +74,16 @@ public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe
     }
 
     @Override
-    public boolean fits(int width, int height)
-    {
+    public boolean fits(int width, int height) {
         return width * height >= 2;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer()
-    {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.ELYTRA_WING_COMBINATION_RECIPE;
     }
 
-    public NbtCompound convertWingToNBT(ItemStack wingIn)
-    {
+    public NbtCompound convertWingToNBT(ItemStack wingIn) {
         return wingIn.getOrCreateTag();
     }
 }

@@ -12,42 +12,31 @@ import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
-public class ElytraHideCapeRecipe extends SpecialCraftingRecipe
-{
-    public ElytraHideCapeRecipe(Identifier id)
-    {
+public class ElytraHideCapeRecipe extends SpecialCraftingRecipe {
+    public ElytraHideCapeRecipe(Identifier id) {
         super(id);
     }
 
     @Override
-    public boolean matches(CraftingInventory inventory, World world)
-    {
+    public boolean matches(CraftingInventory inventory, World world) {
         ItemStack elytraItem = ItemStack.EMPTY;
         ItemStack paperItem = ItemStack.EMPTY;
 
-        for (int i = 0; i < inventory.size(); ++i)
-        {
+        for (int i = 0; i < inventory.size(); ++i) {
             ItemStack inventoryItem = inventory.getStack(i);
-            if (!inventoryItem.isEmpty())
-            {
-                if (inventoryItem.getItem() == Items.PAPER)
-                {
-                    if (!paperItem.isEmpty())
-                    {
+            if (!inventoryItem.isEmpty()) {
+                if (inventoryItem.getItem() == Items.PAPER) {
+                    if (!paperItem.isEmpty()) {
                         return false;
                     }
 
                     paperItem = inventoryItem;
-                }
-                else
-                {
-                    if (inventoryItem.getItem() != Items.ELYTRA && inventoryItem.getItem() != ModItems.CUSTOMIZABLE_ELYTRA && inventoryItem.getItem() != ModItems.ELYTRA_WING)
-                    {
+                } else {
+                    if (inventoryItem.getItem() != Items.ELYTRA && inventoryItem.getItem() != ModItems.CUSTOMIZABLE_ELYTRA && inventoryItem.getItem() != ModItems.ELYTRA_WING) {
                         return false;
                     }
 
-                    if (!elytraItem.isEmpty())
-                    {
+                    if (!elytraItem.isEmpty()) {
                         return false;
                     }
 
@@ -60,44 +49,32 @@ public class ElytraHideCapeRecipe extends SpecialCraftingRecipe
     }
 
     @Override
-    public ItemStack craft(CraftingInventory inventory)
-    {
+    public ItemStack craft(CraftingInventory inventory) {
         ItemStack paperItem = ItemStack.EMPTY;
         ItemStack elytraItem = ItemStack.EMPTY;
 
-        for (int i = 0; i < inventory.size(); ++i)
-        {
+        for (int i = 0; i < inventory.size(); ++i) {
             ItemStack inventoryItem = inventory.getStack(i);
-            if (!inventoryItem.isEmpty())
-            {
-                if (inventoryItem.getItem() == Items.PAPER)
-                {
-                    if (!paperItem.isEmpty())
-                    {
+            if (!inventoryItem.isEmpty()) {
+                if (inventoryItem.getItem() == Items.PAPER) {
+                    if (!paperItem.isEmpty()) {
                         return ItemStack.EMPTY;
                     }
                     paperItem = inventoryItem;
-                }
-                else if (inventoryItem.getItem() == Items.ELYTRA)
-                {
-                    if (!elytraItem.isEmpty())
-                    {
+                } else if (inventoryItem.getItem() == Items.ELYTRA) {
+                    if (!elytraItem.isEmpty()) {
                         return ItemStack.EMPTY;
                     }
                     ItemStack customizableElytraItem = new ItemStack(ModItems.CUSTOMIZABLE_ELYTRA);
                     EnchantmentHelper.set(EnchantmentHelper.get(inventoryItem), customizableElytraItem);
-                    if (!inventoryItem.getName().equals(new TranslatableText(Items.ELYTRA.getTranslationKey())))
-                    {
+                    if (!inventoryItem.getName().equals(new TranslatableText(Items.ELYTRA.getTranslationKey()))) {
                         customizableElytraItem.setCustomName(inventoryItem.getName());
                     }
                     customizableElytraItem.setDamage(inventoryItem.getDamage());
                     customizableElytraItem.setRepairCost(inventoryItem.getRepairCost());
                     elytraItem = customizableElytraItem;
-                }
-                else if (inventoryItem.getItem() == ModItems.CUSTOMIZABLE_ELYTRA || inventoryItem.getItem() == ModItems.ELYTRA_WING)
-                {
-                    if (!elytraItem.isEmpty())
-                    {
+                } else if (inventoryItem.getItem() == ModItems.CUSTOMIZABLE_ELYTRA || inventoryItem.getItem() == ModItems.ELYTRA_WING) {
+                    if (!elytraItem.isEmpty()) {
                         return ItemStack.EMPTY;
                     }
                     elytraItem = inventoryItem.copy();
@@ -106,22 +83,19 @@ public class ElytraHideCapeRecipe extends SpecialCraftingRecipe
             }
         }
 
-        if (!elytraItem.isEmpty())
-        {
+        if (!elytraItem.isEmpty()) {
             elytraItem.getOrCreateTag().putBoolean("HideCapePattern", true);
         }
         return elytraItem;
     }
 
     @Override
-    public boolean fits(int width, int height)
-    {
+    public boolean fits(int width, int height) {
         return width * height >= 2;
     }
 
     @Override
-    public RecipeSerializer<?> getSerializer()
-    {
+    public RecipeSerializer<?> getSerializer() {
         return ModRecipes.ELYTRA_HIDE_CAPE_RECIPE;
     }
 }

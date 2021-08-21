@@ -14,16 +14,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ArmorStandEntityRenderer.class)
-public abstract class ArmorStandEntityRendererMixin extends LivingEntityRenderer<ArmorStandEntity, ArmorStandArmorEntityModel>
-{
-    public ArmorStandEntityRendererMixin(EntityRendererFactory.Context ctx)
-    {
+public abstract class ArmorStandEntityRendererMixin extends LivingEntityRenderer<ArmorStandEntity, ArmorStandArmorEntityModel> {
+    public ArmorStandEntityRendererMixin(EntityRendererFactory.Context ctx) {
         super(ctx, new ArmorStandEntityModel(ctx.getPart(EntityModelLayers.ARMOR_STAND)), 0.0F);
     }
 
     @Inject(at = @At("RETURN"), method = "<init>(Lnet/minecraft/client/render/entity/EntityRendererFactory$Context;)V")
-    private void postConstructor(EntityRendererFactory.Context context, CallbackInfo callbackInfo)
-    {
+    private void postConstructor(EntityRendererFactory.Context context, CallbackInfo callbackInfo) {
         this.addFeature(new CustomizableElytraFeatureRenderer<>(this, context.getModelLoader()));
     }
 }

@@ -10,12 +10,10 @@ import net.minecraft.util.Identifier;
 
 import java.util.List;
 
-public class SplitCustomizationHandler extends CustomizationHandler
-{
+public class SplitCustomizationHandler extends CustomizationHandler {
     private final ElytraCustomizationData leftWing, rightWing;
 
-    public SplitCustomizationHandler(ItemStack itemIn)
-    {
+    public SplitCustomizationHandler(ItemStack itemIn) {
         super(itemIn.getOrCreateTag().getBoolean("HideCapePattern"), itemIn.getOrCreateTag().getInt("WingLightLevel"));
         NbtCompound wingTag = itemIn.getSubTag("WingInfo");
         leftWing = ElytraCustomizationUtil.getData(wingTag.getCompound("left"));
@@ -23,30 +21,25 @@ public class SplitCustomizationHandler extends CustomizationHandler
     }
 
     @Override
-    public int getColor(int index)
-    {
+    public int getColor(int index) {
         return index == 0 ? leftWing.handler.getColor(index) : rightWing.handler.getColor(index);
     }
 
     @Override
-    public boolean isWingCapeHidden(int index)
-    {
+    public boolean isWingCapeHidden(int index) {
         return super.isWingCapeHidden(index) || (index == 0 ? leftWing.handler.isWingCapeHidden(index) : rightWing.handler.isWingCapeHidden(index));
     }
 
     @Override
-    public int modifyWingLight(int lightLevel, int index)
-    {
+    public int modifyWingLight(int lightLevel, int index) {
         int baseWingLight = super.modifyWingLight(lightLevel, index);
-        if (baseWingLight != lightLevel)
-        {
+        if (baseWingLight != lightLevel) {
             return baseWingLight;
         }
         return index == 0 ? leftWing.handler.modifyWingLight(lightLevel, index) : rightWing.handler.modifyWingLight(lightLevel, index);
     }
 
-    public <T extends LivingEntity, M extends AnimalModel<T>> void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, List<M> renderModels, Identifier leftWingTexture, Identifier rightWingTexture, boolean hasGlint)
-    {
+    public <T extends LivingEntity, M extends AnimalModel<T>> void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, List<M> renderModels, Identifier leftWingTexture, Identifier rightWingTexture, boolean hasGlint) {
         leftWing.handler.render(matrixStackIn, bufferIn, modifyWingLight(packedLightIn, 0), entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, renderModels.get(0), leftWingTexture, hasGlint);
         rightWing.handler.render(matrixStackIn, bufferIn, modifyWingLight(packedLightIn, 1), entitylivingbaseIn, limbSwing, limbSwingAmount, partialTicks, ageInTicks, netHeadYaw, headPitch, renderModels.get(1), rightWingTexture, hasGlint);
     }

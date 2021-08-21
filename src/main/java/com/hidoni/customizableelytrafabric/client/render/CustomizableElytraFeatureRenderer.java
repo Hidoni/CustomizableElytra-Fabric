@@ -60,7 +60,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
                 ElytraEntityModel<T> elytraModel = ((ElytraFeatureRendererAccessor<T>) this).getElytraModel();
                 this.getContextModel().copyStateTo(elytraModel);
                 Identifier elytraTexture = getTextureWithCape(livingEntity, elytra.getTag(), data.handler.isWingCapeHidden(0));
-                data.handler.render(matrixStack, vertexConsumerProvider, light, livingEntity, f, g, h, j, k, l, elytraModel, elytraTexture, elytra.hasGlint());
+                data.handler.render(matrixStack, vertexConsumerProvider, data.handler.modifyWingLight(light, 0), livingEntity, f, g, h, j, k, l, elytraModel, elytraTexture, elytra.hasGlint());
             }
             else
             {

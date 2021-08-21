@@ -13,6 +13,7 @@ public class ModRecipes
     public static SpecialRecipeSerializer<ElytraWingCombinationRecipe> ELYTRA_WING_COMBINATION_RECIPE = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(CustomizableElytra.MOD_ID, "elytra_wing_combination_recipe"), new SpecialRecipeSerializer<>(ElytraWingCombinationRecipe::new));
     public static SpecialRecipeSerializer<ElytraToVanillaRecipe> ELYTRA_TO_VANILLA_RECIPE = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(CustomizableElytra.MOD_ID, "elytra_to_vanilla_recipe"), new SpecialRecipeSerializer<>(ElytraToVanillaRecipe::new));
     public static SpecialRecipeSerializer<ElytraHideCapeRecipe> ELYTRA_HIDE_CAPE_RECIPE = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(CustomizableElytra.MOD_ID, "elytra_hide_cape_recipe"), new SpecialRecipeSerializer<>(ElytraHideCapeRecipe::new));
+    public static SpecialRecipeSerializer<ElytraWingGlowRecipe> ELYTRA_WING_GLOW_RECIPE = Registry.register(Registry.RECIPE_SERIALIZER, new Identifier(CustomizableElytra.MOD_ID, "elytra_wing_glow_recipe"), new SpecialRecipeSerializer<>(ElytraWingGlowRecipe::new));
 
     public static void register()
     {

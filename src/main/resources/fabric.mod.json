@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "customizableelytra-fabric",
+  "id": "customizableelytra",
   "version": "${version}",
-  "name": "Customizableelytra Fabric",
+  "name": "Customizable Elytra",
   "description": "Allows elytra to be dyed like leather armor and have banners placed on them like shields",
   "authors": [
     "Hidoni"
@@ -22,8 +22,9 @@
     ]
   },
   "mixins": [
-    "customizableelytra-fabric.mixins.json"
+    "customizableelytra.mixins.json"
   ],
+  "accessWidener": "customizableelytra.accesswidener",
   "depends": {
     "fabricloader": ">=0.11.1",
     "fabric": "*",

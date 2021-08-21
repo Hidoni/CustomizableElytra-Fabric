@@ -7,7 +7,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
+import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -40,7 +42,7 @@ public class ElytraWingItem extends Item implements DyeableItem
     public boolean hasColor(ItemStack stack)
     {
         CompoundTag compoundTag = stack.getSubTag("BlockEntityTag");
-        return DyeableItem.super.hasColor(stack) || compoundTag != null;
+        return DyeableItem.super.hasColor(stack) || compoundTag != null || stack.getTag().getBoolean("HideCapePattern");
     }
 
     @Override
@@ -52,12 +54,16 @@ public class ElytraWingItem extends Item implements DyeableItem
         {
             stack.removeSubTag("BlockEntityTag");
         }
+        stack.getOrCreateTag().remove("HideCapePattern");
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context)
     {
+        if (stack.getOrCreateTag().getBoolean("HideCapePattern"))
+        {
+            tooltip.add(new TranslatableText(CustomizableElytraItem.HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+        }
         BannerItem.appendBannerTooltip(stack, tooltip);
     }
-
 }

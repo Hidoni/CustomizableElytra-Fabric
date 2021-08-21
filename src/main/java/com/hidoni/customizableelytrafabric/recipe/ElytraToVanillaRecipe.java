@@ -1,6 +1,7 @@
 package com.hidoni.customizableelytrafabric.recipe;
 
 import com.hidoni.customizableelytrafabric.item.CustomizableElytraItem;
+import com.hidoni.customizableelytrafabric.registry.ModRecipes;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
@@ -76,6 +77,6 @@ public class ElytraToVanillaRecipe extends SpecialCraftingRecipe
     @Override
     public RecipeSerializer<?> getSerializer()
     {
-        return null;
+        return ModRecipes.ELYTRA_TO_VANILLA_RECIPE;
     }
 }

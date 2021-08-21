@@ -9,9 +9,8 @@ targetCompatibility = JavaVersion.VERSION_1_8
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
-def caelus_version = "0.0.9-1.16.3"
+def caelus_version = "0.0.15-1.16.4"
 def trinkets_version = "2.6.7"
-def curios_version = "0.0.13-1.16.5"
 
 dependencies {
     //to change the versions see the gradle.properties file
@@ -84,17 +83,24 @@ repositories {
         url = "https://maven.theillusivec4.top"
     }
     maven {
-        url = "https://jitpack.io"
+        name = "TerraformersMC"
+        url = "https://maven.terraformersmc.com/"
     }
     maven {
         name = "Ladysnake Libs"
-        url = 'https://dl.bintray.com/ladysnake/libs'
+        url = "https://ladysnake.jfrog.io/artifactory/mods"
     }
 
 }
 
+minecraft {
+    accessWidener = file("src/main/resources/customizableelytra.accesswidener")
+}
+
 dependencies {
     modImplementation "top.theillusivec4.caelus:caelus-fabric:${caelus_version}"
-    modImplementation "com.github.emilyalexandra:trinkets:${trinkets_version}"
-    modImplementation "top.theillusivec4.curios:curios-fabric:${curios_version}"
+    modImplementation "dev.emi:trinkets:${trinkets_version}"
+    // Workaround for trinkets dependencies
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-base:2.7.12"
+    modImplementation "io.github.onyxstudios.Cardinal-Components-API:cardinal-components-entity:2.7.12"
 }

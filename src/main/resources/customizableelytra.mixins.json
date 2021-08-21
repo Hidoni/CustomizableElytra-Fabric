@@ -4,11 +4,16 @@
   "package": "com.hidoni.customizableelytrafabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "LivingEntityMixin"
   ],
   "client": [
     "ArmorStandEntityRendererMixin",
     "CapeFeatureRendererMixin",
-    "PlayerEntityRendererMixin"
+    "ElytraFeatureRendererAccessor",
+    "PlayerEntityRendererMixin",
+    "PlayerSkinTextureAccessor",
+    "PlayerSkinTextureInvoker",
+    "ResourceTextureInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

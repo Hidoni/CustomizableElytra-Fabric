@@ -47,7 +47,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
     }
 
     @Override
-    public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, T livingEntity, float f, float g, float h, float j, float k, float l)
+    public void render(MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int light, T livingEntity, float f, float g, float h, float j, float k, float l)
     {
         ItemStack elytra = tryFindElytra(livingEntity);
         if (elytra != ItemStack.EMPTY)
@@ -60,7 +60,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
                 ElytraEntityModel<T> elytraModel = ((ElytraFeatureRendererAccessor<T>) this).getElytraModel();
                 this.getContextModel().copyStateTo(elytraModel);
                 Identifier elytraTexture = getTextureWithCape(livingEntity, elytra, data.handler.isWingCapeHidden(0));
-                data.handler.render(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, elytraModel, elytraTexture, elytra.hasGlint());
+                data.handler.render(matrixStack, vertexConsumerProvider, light, livingEntity, f, g, h, j, k, l, elytraModel, elytraTexture, elytra.hasGlint());
             }
             else
             {
@@ -71,7 +71,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
                 }
                 Identifier leftWingTexture = getTextureWithCape(livingEntity, elytra, data.handler.isWingCapeHidden(0));
                 Identifier rightWingTexture = getTextureWithCape(livingEntity, elytra, data.handler.isWingCapeHidden(1));
-                ((SplitCustomizationHandler) data.handler).render(matrixStack, vertexConsumerProvider, i, livingEntity, f, g, h, j, k, l, models, leftWingTexture, rightWingTexture, elytra.hasGlint());
+                ((SplitCustomizationHandler) data.handler).render(matrixStack, vertexConsumerProvider, light, livingEntity, f, g, h, j, k, l, models, leftWingTexture, rightWingTexture, elytra.hasGlint());
             }
             matrixStack.pop();
         }

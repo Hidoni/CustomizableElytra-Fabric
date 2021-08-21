@@ -48,7 +48,7 @@ public class ElytraCustomizationUtil
     public static ElytraCustomizationData getData(NbtCompound wingIn)
     {
         NbtCompound wingNBT = migrateOldSplitWingFormat(wingIn);
-        if (wingNBT.contains("display"))
+        if (wingNBT.contains("display") && wingNBT.getCompound("display").contains("color"))
         {
             return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Dye, new DyeCustomizationHandler(wingNBT));
         }

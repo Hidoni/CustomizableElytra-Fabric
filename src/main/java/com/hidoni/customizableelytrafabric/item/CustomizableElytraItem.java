@@ -65,30 +65,21 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (stack.getOrCreateTag().getBoolean("HideCapePattern")) {
-            tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
-        }
-        BannerItem.appendBannerTooltip(stack, tooltip);
+        applyTooltip(tooltip, context, stack.getTag(), true);
         CompoundTag wingInfo = stack.getSubTag("WingInfo");
         if (wingInfo != null) {
             if (wingInfo.contains("left")) {
                 CompoundTag leftWing = wingInfo.getCompound("left");
                 if (!leftWing.isEmpty()) {
                     tooltip.add(new TranslatableText(LEFT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                    if (leftWing.getBoolean("HideCapePattern")) {
-                        tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
-                    }
-                    applyWingTooltip(tooltip, context, leftWing);
+                    applyTooltip(tooltip, context, leftWing);
                 }
             }
             if (wingInfo.contains("right")) {
                 CompoundTag rightWing = wingInfo.getCompound("right");
                 if (!rightWing.isEmpty()) {
                     tooltip.add(new TranslatableText(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
-                    if (rightWing.getBoolean("HideCapePattern")) {
-                        tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
-                    }
-                    applyWingTooltip(tooltip, context, rightWing);
+                    applyTooltip(tooltip, context, rightWing);
                 }
             }
         }
@@ -99,9 +90,16 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem {
         return Items.ELYTRA.getTranslationKey();
     }
 
-    private void applyWingTooltip(List<Text> tooltip, TooltipContext context, CompoundTag wingIn) {
+    public static void applyTooltip(List<Text> tooltip, TooltipContext context, CompoundTag wingIn) {
+        applyTooltip(tooltip, context, wingIn, false);
+    }
+
+    public static void applyTooltip(List<Text> tooltip, TooltipContext context, CompoundTag wingIn, boolean ignoreDisplayTag) {
         CompoundTag wing = ElytraCustomizationUtil.migrateOldSplitWingFormat(wingIn);
-        if (wing.contains("display")) {
+        if (wing.getBoolean("HideCapePattern")) {
+            tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+        }
+        if (!ignoreDisplayTag && wing.contains("display")) {
             CompoundTag displayTag = wing.getCompound("display");
             if (context.isAdvanced()) {
                 tooltip.add((new TranslatableText("item.color", String.format("#%06X", displayTag.getInt("color")))).formatted(Formatting.GRAY));

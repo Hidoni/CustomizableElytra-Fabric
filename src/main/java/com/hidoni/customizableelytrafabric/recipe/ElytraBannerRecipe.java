@@ -84,7 +84,10 @@ public class ElytraBannerRecipe extends SpecialCraftingRecipe {
             NbtCompound compoundnbt1 = compoundnbt == null ? new NbtCompound() : compoundnbt.copy();
             compoundnbt1.putInt("Base", ((BannerItem) bannerItem.getItem()).getColor().getId());
             elytraItem.getOrCreateTag().put("BlockEntityTag", compoundnbt1);
-            elytraItem.removeSubTag("display"); // Remove dye if it has one
+            NbtCompound displayTag = elytraItem.getSubTag("display");
+            if (displayTag != null && displayTag.contains("color", 99)) {
+                displayTag.remove("color");
+            }
         }
         return elytraItem;
     }

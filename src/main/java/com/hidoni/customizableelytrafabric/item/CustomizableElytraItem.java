@@ -108,6 +108,8 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem {
             }
         } else if (wing.contains("BlockEntityTag")) {
             CompoundTag blockEntityTag = wing.getCompound("BlockEntityTag");
+            int baseColor = blockEntityTag.getInt("Base");
+            tooltip.add((new TranslatableText("block.minecraft.banner." + BannerPattern.BASE.getName() + '.' + DyeColor.byId(baseColor).getName())).formatted(Formatting.GRAY));
             ListTag listnbt = blockEntityTag.getList("Patterns", 10);
 
             for (int i = 0; i < listnbt.size() && i < 6; ++i) {

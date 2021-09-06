@@ -1,15 +1,12 @@
 package com.hidoni.customizableelytrafabric.item;
 
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.BannerItem;
 import net.minecraft.item.DyeableItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,12 +49,6 @@ public class ElytraWingItem extends Item implements DyeableItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        if (stack.getOrCreateTag().getBoolean("HideCapePattern")) {
-            tooltip.add(new TranslatableText(CustomizableElytraItem.HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
-        }
-        if (stack.getOrCreateTag().getInt("WingLightLevel") > 0) {
-            tooltip.add(new TranslatableText(CustomizableElytraItem.GLOWING_WING_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
-        }
-        BannerItem.appendBannerTooltip(stack, tooltip);
+        CustomizableElytraItem.applyTooltip(tooltip, context, stack.getTag(), true);
     }
 }

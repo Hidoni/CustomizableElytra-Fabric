@@ -98,24 +98,26 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
     }
 
     private Identifier getTextureWithCape(T livingEntity, CompoundTag customizationTag, boolean capeHidden) {
-        Identifier elytraTexture;
+        Identifier elytraTexture = null;
+        boolean isGrayscaleTexture = ElytraCustomizationUtil.getData(customizationTag).type != ElytraCustomizationData.CustomizationType.None;
         if (!capeHidden && livingEntity instanceof AbstractClientPlayerEntity) {
             AbstractClientPlayerEntity abstractclientplayerentity = (AbstractClientPlayerEntity) livingEntity;
             if (abstractclientplayerentity.canRenderElytraTexture() && abstractclientplayerentity.getElytraTexture() != null) {
-                elytraTexture = ElytraTextureUtil.getGrayscale(abstractclientplayerentity.getElytraTexture());
+                elytraTexture = abstractclientplayerentity.getElytraTexture();
             } else if (abstractclientplayerentity.canRenderCapeTexture() && abstractclientplayerentity.getCapeTexture() != null && abstractclientplayerentity.isPartVisible(PlayerModelPart.CAPE)) {
-                elytraTexture = ElytraTextureUtil.getGrayscale(abstractclientplayerentity.getCapeTexture());
-            } else {
-                elytraTexture = getElytraTexture(customizationTag, livingEntity);
+                elytraTexture = abstractclientplayerentity.getCapeTexture();
             }
-        } else {
-            elytraTexture = getElytraTexture(customizationTag, livingEntity);
+        }
+        if (elytraTexture == null) {
+            elytraTexture = getElytraTexture(isGrayscaleTexture);
+        } else if (isGrayscaleTexture) {
+            elytraTexture = ElytraTextureUtil.getGrayscale(elytraTexture);
         }
         return elytraTexture;
     }
 
-    public Identifier getElytraTexture(CompoundTag customizationTag, T entity) {
-        if (ElytraCustomizationUtil.getData(customizationTag).type != ElytraCustomizationData.CustomizationType.None) {
+    public Identifier getElytraTexture(boolean isGrayscaleTexture) {
+        if (isGrayscaleTexture) {
             return TEXTURE_DYEABLE_ELYTRA;
         }
         return ((ElytraFeatureRendererAccessor<T>) this).getElytraTexture();

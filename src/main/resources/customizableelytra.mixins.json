@@ -4,6 +4,7 @@
   "package": "com.hidoni.customizableelytrafabric.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "DyeableItemMixin"
   ],
   "client": [
     "ElytraFeatureRendererAccessor",

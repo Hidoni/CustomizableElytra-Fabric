@@ -33,7 +33,7 @@ public class ElytraWingItem extends Item implements DyeableItem {
     @Override
     public boolean hasColor(ItemStack stack) {
         NbtCompound compoundTag = stack.getSubNbt("BlockEntityTag");
-        return DyeableItem.super.hasColor(stack) || compoundTag != null || stack.getNbt().getInt("WingLightLevel") > 0 || stack.getNbt().getBoolean("HideCapePattern");
+        return DyeableItem.super.hasColor(stack) || compoundTag != null || stack.getOrCreateNbt().getInt("WingLightLevel") > 0 || stack.getOrCreateNbt().getBoolean("HideCapePattern");
     }
 
     @Override
@@ -49,6 +49,6 @@ public class ElytraWingItem extends Item implements DyeableItem {
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        CustomizableElytraItem.applyTooltip(tooltip, context, stack.getNbt(), true);
+        CustomizableElytraItem.applyTooltip(tooltip, context, stack.getOrCreateNbt(), true);
     }
 }

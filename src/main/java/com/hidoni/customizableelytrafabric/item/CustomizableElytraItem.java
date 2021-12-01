@@ -71,7 +71,7 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem, F
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        applyTooltip(tooltip, context, stack.getNbt(), true);
+        applyTooltip(tooltip, context, stack.getOrCreateNbt(), true);
         NbtCompound wingInfo = stack.getSubNbt("WingInfo");
         if (wingInfo != null) {
             if (wingInfo.contains("left")) {

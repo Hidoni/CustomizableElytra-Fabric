@@ -24,7 +24,6 @@ import net.minecraft.client.render.entity.model.EntityModelLoader;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
@@ -70,8 +69,8 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
                 return elytra;
             }
         }
-        if (com.hidoni.customizableelytrafabric.CustomizableElytra.trinketsLoaded && entity instanceof PlayerEntity) {
-            Optional<TrinketComponent> trinketComponent = TrinketsApi.getTrinketComponent((PlayerEntity) entity);
+        if (com.hidoni.customizableelytrafabric.CustomizableElytra.trinketsLoaded) {
+            Optional<TrinketComponent> trinketComponent = TrinketsApi.getTrinketComponent(entity);
             if (trinketComponent.isPresent()) {
                 List<Pair<SlotReference, ItemStack>> equipped_elytra = trinketComponent.get().getEquipped(ModItems.CUSTOMIZABLE_ELYTRA);
                 if (!equipped_elytra.isEmpty()) {

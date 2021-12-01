@@ -23,18 +23,12 @@ public class CustomizableElytra implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         FabricModelPredicateProviderRegistry.register(ModItems.CUSTOMIZABLE_ELYTRA, new Identifier(MOD_ID, "broken_elytra"), ((stack, world, entity, seed) ->
-        {
-            return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA && CustomizableElytraItem.isUsable(stack) ? 0.0F : 1.0F;
-        }));
+                stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA && CustomizableElytraItem.isUsable(stack) ? 0.0F : 1.0F));
 
         ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
-        {
-            return ((CustomizableElytraItem) stack.getItem()).getColor(stack, tintIndex);
-        }, ModItems.CUSTOMIZABLE_ELYTRA);
+                ((CustomizableElytraItem) stack.getItem()).getColor(stack, tintIndex), ModItems.CUSTOMIZABLE_ELYTRA);
         ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
-        {
-            return tintIndex > 0 ? -1 : ((ElytraWingItem) stack.getItem()).getColor(stack);
-        }, ModItems.ELYTRA_WING);
+                tintIndex > 0 ? -1 : ((ElytraWingItem) stack.getItem()).getColor(stack), ModItems.ELYTRA_WING);
 
         ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) ->
         {

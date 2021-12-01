@@ -26,9 +26,8 @@
   ],
   "accessWidener": "customizableelytra.accesswidener",
   "depends": {
-    "fabricloader": ">=0.11.6",
-    "fabric": ">=0.36.0",
-    "minecraft": ">=1.17",
-    "caelus": "*"
+    "fabricloader": ">=0.12.8",
+    "fabric": ">=0.43.1",
+    "minecraft": ">=1.18"
   }
 }

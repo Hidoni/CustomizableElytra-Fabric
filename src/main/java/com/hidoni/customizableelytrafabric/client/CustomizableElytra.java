@@ -9,9 +9,12 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.block.entity.BannerPattern;
+import net.minecraft.client.render.entity.ArmorStandEntityRenderer;
+import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
@@ -26,6 +29,7 @@ public class CustomizableElytra implements ClientModInitializer {
         registerColorProviders();
         registerElytraBannerPatterns();
         registerFeatureRendererEventHandlers();
+        registerFeatureRenderers();
     }
 
     private void registerModelPredicates() {
@@ -54,6 +58,14 @@ public class CustomizableElytra implements ClientModInitializer {
         LivingEntityFeatureRenderEvents.ALLOW_CAPE_RENDER.register((entity) -> {
             ItemStack stack = CustomizableElytraFeatureRenderer.tryFindElytra(entity);
             return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA;
+        });
+    }
+
+    private void registerFeatureRenderers() {
+        LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper, context) -> {
+            if (entityRenderer instanceof ArmorStandEntityRenderer || entityRenderer instanceof PlayerEntityRenderer) {
+                registrationHelper.register(new CustomizableElytraFeatureRenderer<>(entityRenderer, context.getModelLoader()));
+            }
         });
     }
 }

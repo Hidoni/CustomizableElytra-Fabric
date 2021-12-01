@@ -6,9 +6,7 @@
   "mixins": [
   ],
   "client": [
-    "ArmorStandEntityRendererMixin",
     "ElytraFeatureRendererAccessor",
-    "PlayerEntityRendererMixin",
     "PlayerSkinTextureAccessor",
     "PlayerSkinTextureInvoker",
     "ResourceTextureInvoker"

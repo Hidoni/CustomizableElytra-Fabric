@@ -19,11 +19,11 @@ public class ElytraWingItem extends Item implements DyeableItem {
 
     @Override
     public int getColor(ItemStack stack) {
-        NbtCompound compoundTag = stack.getSubTag("display");
+        NbtCompound compoundTag = stack.getSubNbt("display");
         if (compoundTag != null) {
             return compoundTag.contains("color", 99) ? compoundTag.getInt("color") : 16777215;
         }
-        compoundTag = stack.getSubTag("BlockEntityTag");
+        compoundTag = stack.getSubNbt("BlockEntityTag");
         if (compoundTag != null) {
             return DyeColor.byId(compoundTag.getInt("Base")).getMapColor().color;
         }
@@ -32,23 +32,23 @@ public class ElytraWingItem extends Item implements DyeableItem {
 
     @Override
     public boolean hasColor(ItemStack stack) {
-        NbtCompound compoundTag = stack.getSubTag("BlockEntityTag");
-        return DyeableItem.super.hasColor(stack) || compoundTag != null || stack.getTag().getInt("WingLightLevel") > 0 || stack.getTag().getBoolean("HideCapePattern");
+        NbtCompound compoundTag = stack.getSubNbt("BlockEntityTag");
+        return DyeableItem.super.hasColor(stack) || compoundTag != null || stack.getNbt().getInt("WingLightLevel") > 0 || stack.getNbt().getBoolean("HideCapePattern");
     }
 
     @Override
     public void removeColor(ItemStack stack) {
         DyeableItem.super.removeColor(stack);
-        NbtCompound compoundTag = stack.getSubTag("BlockEntityTag");
+        NbtCompound compoundTag = stack.getSubNbt("BlockEntityTag");
         if (compoundTag != null) {
-            stack.removeSubTag("BlockEntityTag");
+            stack.removeSubNbt("BlockEntityTag");
         }
-        stack.getOrCreateTag().remove("HideCapePattern");
-        stack.getOrCreateTag().remove("WingLightLevel");
+        stack.getOrCreateNbt().remove("HideCapePattern");
+        stack.getOrCreateNbt().remove("WingLightLevel");
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        CustomizableElytraItem.applyTooltip(tooltip, context, stack.getTag(), true);
+        CustomizableElytraItem.applyTooltip(tooltip, context, stack.getNbt(), true);
     }
 }

@@ -49,7 +49,7 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
     }
 
     public static ItemStack getColytraSubItem(ItemStack stack) {
-        NbtCompound colytraChestTag = stack.getSubTag("colytra:ElytraUpgrade");
+        NbtCompound colytraChestTag = stack.getSubNbt("colytra:ElytraUpgrade");
         if (colytraChestTag != null) {
             ItemStack elytraStack = ItemStack.fromNbt(colytraChestTag);
             if (elytraStack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA) {
@@ -92,14 +92,14 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
             if (data.type != ElytraCustomizationData.CustomizationType.Split) {
                 ElytraEntityModel<T> elytraModel = ((ElytraFeatureRendererAccessor<T>) this).getElytraModel();
                 this.getContextModel().copyStateTo(elytraModel);
-                Identifier elytraTexture = getTextureWithCape(livingEntity, elytra.getTag(), data.handler.isWingCapeHidden(0));
+                Identifier elytraTexture = getTextureWithCape(livingEntity, elytra.getNbt(), data.handler.isWingCapeHidden(0));
                 data.handler.render(matrixStack, vertexConsumerProvider, data.handler.modifyWingLight(light, 0), livingEntity, f, g, h, j, k, l, elytraModel, elytraTexture, elytra.hasGlint());
             } else {
                 List<ElytraWingModel<T>> models = ImmutableList.of(leftWing, rightWing);
                 for (ElytraWingModel<T> model : models) {
                     this.getContextModel().copyStateTo(model);
                 }
-                NbtCompound wingInfo = elytra.getSubTag("WingInfo");
+                NbtCompound wingInfo = elytra.getSubNbt("WingInfo");
                 Identifier leftWingTexture = getTextureWithCape(livingEntity, wingInfo.getCompound("left"), data.handler.isWingCapeHidden(0));
                 Identifier rightWingTexture = getTextureWithCape(livingEntity, wingInfo.getCompound("right"), data.handler.isWingCapeHidden(1));
                 ((SplitCustomizationHandler) data.handler).render(matrixStack, vertexConsumerProvider, light, livingEntity, f, g, h, j, k, l, models, leftWingTexture, rightWingTexture, elytra.hasGlint());

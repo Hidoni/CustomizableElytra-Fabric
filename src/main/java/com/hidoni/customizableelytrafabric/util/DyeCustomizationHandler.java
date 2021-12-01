@@ -20,7 +20,7 @@ public class DyeCustomizationHandler extends CustomizationHandler {
     private final int color;
 
     public DyeCustomizationHandler(ItemStack itemIn) {
-        this(itemIn.getOrCreateTag());
+        this(itemIn.getOrCreateNbt());
     }
 
     public DyeCustomizationHandler(NbtCompound tagIn) {

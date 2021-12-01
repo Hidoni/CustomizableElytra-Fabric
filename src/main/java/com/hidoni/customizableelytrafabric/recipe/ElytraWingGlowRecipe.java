@@ -84,7 +84,7 @@ public class ElytraWingGlowRecipe extends SpecialCraftingRecipe {
         }
 
         if (!elytraItem.isEmpty()) {
-            elytraItem.getOrCreateTag().putInt("WingLightLevel", 1);
+            elytraItem.getOrCreateNbt().putInt("WingLightLevel", 1);
         }
         return elytraItem;
     }

@@ -14,8 +14,8 @@ public class SplitCustomizationHandler extends CustomizationHandler {
     private final ElytraCustomizationData leftWing, rightWing;
 
     public SplitCustomizationHandler(ItemStack itemIn) {
-        super(itemIn.getOrCreateTag().getBoolean("HideCapePattern"), itemIn.getOrCreateTag().getInt("WingLightLevel"));
-        NbtCompound wingTag = itemIn.getSubTag("WingInfo");
+        super(itemIn.getOrCreateNbt().getBoolean("HideCapePattern"), itemIn.getOrCreateNbt().getInt("WingLightLevel"));
+        NbtCompound wingTag = itemIn.getSubNbt("WingInfo");
         leftWing = ElytraCustomizationUtil.getData(wingTag.getCompound("left"));
         rightWing = ElytraCustomizationUtil.getData(wingTag.getCompound("right"));
     }

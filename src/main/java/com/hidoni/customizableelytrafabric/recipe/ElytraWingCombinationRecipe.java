@@ -69,7 +69,7 @@ public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe {
         if (rightWingNBT != null) {
             wingInfo.put("right", rightWingNBT);
         }
-        customizedElytra.putSubTag("WingInfo", wingInfo);
+        customizedElytra.setSubNbt("WingInfo", wingInfo);
         return customizedElytra;
     }
 
@@ -84,6 +84,6 @@ public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe {
     }
 
     public NbtCompound convertWingToNBT(ItemStack wingIn) {
-        return wingIn.getOrCreateTag();
+        return wingIn.getOrCreateNbt();
     }
 }

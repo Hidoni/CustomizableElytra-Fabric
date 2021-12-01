@@ -27,7 +27,7 @@ public class BannerCustomizationHandler extends CustomizationHandler {
     private final List<Pair<BannerPattern, DyeColor>> patterns;
 
     public BannerCustomizationHandler(ItemStack itemIn) {
-        this(itemIn.getOrCreateTag());
+        this(itemIn.getOrCreateNbt());
     }
 
     public BannerCustomizationHandler(NbtCompound tagIn) {

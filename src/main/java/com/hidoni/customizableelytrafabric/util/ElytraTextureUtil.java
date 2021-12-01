@@ -21,11 +21,11 @@ public class ElytraTextureUtil {
     private static void convertTextureToGrayscale(NativeImage nativeImage) {
         for (int x = 0; x < nativeImage.getWidth(); x++) {
             for (int y = 0; y < nativeImage.getHeight(); y++) {
-                int pixelRGBA = nativeImage.getPixelColor(x, y);
+                int pixelRGBA = nativeImage.getColor(x, y);
                 int originalRGB = pixelRGBA & 0xFFFFFF;
                 int grayscale = (((originalRGB & 0xFF0000) >> 16) + ((originalRGB & 0xFF00) >> 8) + (originalRGB & 0xFF)) / 3;
                 int newRGB = 0x010101 * grayscale;
-                nativeImage.setPixelColor(x, y, (pixelRGBA & 0xFF000000) | (newRGB));
+                nativeImage.setColor(x, y, (pixelRGBA & 0xFF000000) | (newRGB));
             }
         }
     }

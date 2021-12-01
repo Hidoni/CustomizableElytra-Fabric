@@ -41,7 +41,7 @@ public class ElytraBannerRecipe extends SpecialCraftingRecipe {
                         return false;
                     }
 
-                    if (inventoryItem.getSubTag("BlockEntityTag") != null || inventoryItem.getSubTag("WingInfo") != null) {
+                    if (inventoryItem.getSubNbt("BlockEntityTag") != null || inventoryItem.getSubNbt("WingInfo") != null) {
                         return false;
                     }
 
@@ -80,11 +80,11 @@ public class ElytraBannerRecipe extends SpecialCraftingRecipe {
         }
 
         if (!elytraItem.isEmpty()) {
-            NbtCompound compoundnbt = bannerItem.getSubTag("BlockEntityTag");
+            NbtCompound compoundnbt = bannerItem.getSubNbt("BlockEntityTag");
             NbtCompound compoundnbt1 = compoundnbt == null ? new NbtCompound() : compoundnbt.copy();
             compoundnbt1.putInt("Base", ((BannerItem) bannerItem.getItem()).getColor().getId());
-            elytraItem.getOrCreateTag().put("BlockEntityTag", compoundnbt1);
-            NbtCompound displayTag = elytraItem.getSubTag("display");
+            elytraItem.getOrCreateNbt().put("BlockEntityTag", compoundnbt1);
+            NbtCompound displayTag = elytraItem.getSubNbt("display");
             if (displayTag != null && displayTag.contains("color", 99)) {
                 displayTag.remove("color");
             }

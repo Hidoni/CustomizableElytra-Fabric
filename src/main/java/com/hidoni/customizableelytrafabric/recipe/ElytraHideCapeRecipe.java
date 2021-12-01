@@ -84,7 +84,7 @@ public class ElytraHideCapeRecipe extends SpecialCraftingRecipe {
         }
 
         if (!elytraItem.isEmpty()) {
-            elytraItem.getOrCreateTag().putBoolean("HideCapePattern", true);
+            elytraItem.getOrCreateNbt().putBoolean("HideCapePattern", true);
         }
         return elytraItem;
     }

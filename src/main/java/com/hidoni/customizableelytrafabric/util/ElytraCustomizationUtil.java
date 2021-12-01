@@ -5,10 +5,10 @@ import net.minecraft.nbt.NbtCompound;
 
 public class ElytraCustomizationUtil {
     public static ElytraCustomizationData getData(ItemStack elytraIn) {
-        if (elytraIn.getSubTag("WingInfo") != null) {
+        if (elytraIn.getSubNbt("WingInfo") != null) {
             return new ElytraCustomizationData(ElytraCustomizationData.CustomizationType.Split, new SplitCustomizationHandler(elytraIn));
         }
-        return getData(elytraIn.getTag());
+        return getData(elytraIn.getNbt());
     }
 
     /*

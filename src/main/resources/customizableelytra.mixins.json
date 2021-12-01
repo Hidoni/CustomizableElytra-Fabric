@@ -7,7 +7,6 @@
   ],
   "client": [
     "ArmorStandEntityRendererMixin",
-    "CapeFeatureRendererMixin",
     "ElytraFeatureRendererAccessor",
     "PlayerEntityRendererMixin",
     "PlayerSkinTextureAccessor",

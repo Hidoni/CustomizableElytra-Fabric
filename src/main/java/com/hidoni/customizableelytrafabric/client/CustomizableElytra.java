@@ -1,5 +1,6 @@
 package com.hidoni.customizableelytrafabric.client;
 
+import com.hidoni.customizableelytrafabric.client.render.CustomizableElytraFeatureRenderer;
 import com.hidoni.customizableelytrafabric.item.CustomizableElytraItem;
 import com.hidoni.customizableelytrafabric.item.ElytraWingItem;
 import com.hidoni.customizableelytrafabric.registry.ModItems;
@@ -7,10 +8,12 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
 import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
 import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.texture.SpriteAtlasTexture;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
@@ -40,5 +43,9 @@ public class CustomizableElytra implements ClientModInitializer {
                 registry.register(textureIdentifier);
             }
         }));
+        LivingEntityFeatureRenderEvents.ALLOW_CAPE_RENDER.register((entity) -> {
+            ItemStack stack = CustomizableElytraFeatureRenderer.tryFindElytra(entity);
+            return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA;
+        });
     }
 }

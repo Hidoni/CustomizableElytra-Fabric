@@ -57,7 +57,7 @@ public class CustomizableElytra implements ClientModInitializer {
     private void registerFeatureRendererEventHandlers() {
         LivingEntityFeatureRenderEvents.ALLOW_CAPE_RENDER.register((entity) -> {
             ItemStack stack = CustomizableElytraFeatureRenderer.tryFindElytra(entity);
-            return stack.getItem() == ModItems.CUSTOMIZABLE_ELYTRA;
+            return stack.getItem() != ModItems.CUSTOMIZABLE_ELYTRA;
         });
     }
 

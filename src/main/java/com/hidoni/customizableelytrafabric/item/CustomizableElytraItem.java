@@ -4,6 +4,7 @@ import com.hidoni.customizableelytrafabric.CustomizableElytra;
 import com.hidoni.customizableelytrafabric.util.ElytraCustomizationUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.entity.event.v1.FabricElytraItem;
 import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.*;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class CustomizableElytraItem extends ElytraItem implements DyeableItem {
+public class CustomizableElytraItem extends ElytraItem implements DyeableItem, FabricElytraItem {
     public final static String LEFT_WING_TRANSLATION_KEY = "item.customizableelytra.left_wing";
     public final static String RIGHT_WING_TRANSLATION_KEY = "item.customizableelytra.right_wing";
     public final static String HIDDEN_CAPE_TRANSLATION_KEY = "item.customizableelytra.cape_hidden";
@@ -45,30 +46,30 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem {
 
     @Override
     public boolean hasColor(ItemStack stack) {
-        NbtCompound bannerTag = stack.getSubTag("BlockEntityTag");
-        NbtCompound wingTag = stack.getSubTag("WingInfo");
-        return DyeableItem.super.hasColor(stack) || bannerTag != null || wingTag != null || stack.getOrCreateTag().getInt("WingLightLevel") > 0 || stack.getOrCreateTag().getBoolean("HideCapePattern");
+        NbtCompound bannerTag = stack.getSubNbt("BlockEntityTag");
+        NbtCompound wingTag = stack.getSubNbt("WingInfo");
+        return DyeableItem.super.hasColor(stack) || bannerTag != null || wingTag != null || stack.getOrCreateNbt().getInt("WingLightLevel") > 0 || stack.getOrCreateNbt().getBoolean("HideCapePattern");
     }
 
     @Override
     public void removeColor(ItemStack stack) {
         DyeableItem.super.removeColor(stack);
-        NbtCompound compoundTag = stack.getSubTag("BlockEntityTag");
+        NbtCompound compoundTag = stack.getSubNbt("BlockEntityTag");
         if (compoundTag != null) {
-            stack.removeSubTag("BlockEntityTag");
+            stack.removeSubNbt("BlockEntityTag");
         }
-        compoundTag = stack.getSubTag("WingInfo");
+        compoundTag = stack.getSubNbt("WingInfo");
         if (compoundTag != null) {
-            stack.removeSubTag("WingInfo");
+            stack.removeSubNbt("WingInfo");
         }
-        stack.getOrCreateTag().remove("HideCapePattern");
-        stack.getOrCreateTag().remove("WingLightLevel");
+        stack.getOrCreateNbt().remove("HideCapePattern");
+        stack.getOrCreateNbt().remove("WingLightLevel");
     }
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
-        applyTooltip(tooltip, context, stack.getTag(), true);
-        NbtCompound wingInfo = stack.getSubTag("WingInfo");
+        applyTooltip(tooltip, context, stack.getNbt(), true);
+        NbtCompound wingInfo = stack.getSubNbt("WingInfo");
         if (wingInfo != null) {
             if (wingInfo.contains("left")) {
                 NbtCompound leftWing = wingInfo.getCompound("left");

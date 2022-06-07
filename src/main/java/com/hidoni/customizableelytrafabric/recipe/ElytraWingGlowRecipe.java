@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
@@ -67,7 +67,7 @@ public class ElytraWingGlowRecipe extends SpecialCraftingRecipe {
                     }
                     ItemStack customizableElytraItem = new ItemStack(ModItems.CUSTOMIZABLE_ELYTRA);
                     EnchantmentHelper.set(EnchantmentHelper.get(inventoryItem), customizableElytraItem);
-                    if (!inventoryItem.getName().equals(new TranslatableText(Items.ELYTRA.getTranslationKey()))) {
+                    if (!inventoryItem.getName().equals(Text.translatable(Items.ELYTRA.getTranslationKey()))) {
                         customizableElytraItem.setCustomName(inventoryItem.getName());
                     }
                     customizableElytraItem.setDamage(inventoryItem.getDamage());

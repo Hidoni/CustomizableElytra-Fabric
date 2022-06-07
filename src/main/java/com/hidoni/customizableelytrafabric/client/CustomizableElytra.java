@@ -18,6 +18,8 @@ import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.RegistryKey;
 
 @Environment(EnvType.CLIENT)
 public class CustomizableElytra implements ClientModInitializer {
@@ -47,7 +49,7 @@ public class CustomizableElytra implements ClientModInitializer {
     private void registerElytraBannerPatterns() {
         ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) ->
         {
-            for (BannerPattern pattern : BannerPattern.values()) {
+            for (RegistryKey<BannerPattern> pattern : Registry.BANNER_PATTERN.getKeys()) {
                 Identifier textureIdentifier = CustomizableElytraItem.getTextureLocation(pattern);
                 registry.register(textureIdentifier);
             }

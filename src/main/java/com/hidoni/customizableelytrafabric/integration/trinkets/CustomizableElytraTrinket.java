@@ -29,7 +29,7 @@ public class CustomizableElytraTrinket implements Trinket {
                 stack.damage(1, entity, p -> TrinketsApi.onTrinketBroken(stack, slotReference, entity));
             }
 
-            entity.emitGameEvent(GameEvent.ELYTRA_FREE_FALL);
+            entity.emitGameEvent(GameEvent.ELYTRA_GLIDE);
         }
     }
 }

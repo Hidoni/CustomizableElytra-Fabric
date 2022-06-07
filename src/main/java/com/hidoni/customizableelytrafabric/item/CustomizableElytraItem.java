@@ -6,6 +6,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.entity.event.v1.FabricElytraItem;
 import net.minecraft.block.entity.BannerPattern;
+import net.minecraft.block.entity.BannerPatterns;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.DyeableItem;
 import net.minecraft.item.ElytraItem;
@@ -14,10 +15,11 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,8 +36,8 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem, F
     }
 
     @Environment(EnvType.CLIENT)
-    public static Identifier getTextureLocation(BannerPattern bannerIn) {
-        return new Identifier(CustomizableElytra.MOD_ID, "entity/elytra_banner/" + bannerIn.getName());
+    public static Identifier getTextureLocation(RegistryKey<BannerPattern> bannerIn) {
+        return new Identifier(CustomizableElytra.MOD_ID, "entity/elytra_banner/" + bannerIn.getValue().getPath());
     }
 
     @Override
@@ -77,14 +79,14 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem, F
             if (wingInfo.contains("left")) {
                 NbtCompound leftWing = wingInfo.getCompound("left");
                 if (!leftWing.isEmpty()) {
-                    tooltip.add(new TranslatableText(LEFT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable(LEFT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
                     applyTooltip(tooltip, context, leftWing);
                 }
             }
             if (wingInfo.contains("right")) {
                 NbtCompound rightWing = wingInfo.getCompound("right");
                 if (!rightWing.isEmpty()) {
-                    tooltip.add(new TranslatableText(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
+                    tooltip.add(Text.translatable(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
                     applyTooltip(tooltip, context, rightWing);
                 }
             }
@@ -103,30 +105,30 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem, F
     public static void applyTooltip(List<Text> tooltip, TooltipContext context, NbtCompound wingIn, boolean ignoreDisplayTag) {
         NbtCompound wing = ElytraCustomizationUtil.migrateOldSplitWingFormat(wingIn);
         if (wing.getBoolean("HideCapePattern")) {
-            tooltip.add(new TranslatableText(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+            tooltip.add(Text.translatable(HIDDEN_CAPE_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
         }
         if (wing.getInt("WingLightLevel") > 0) {
-            tooltip.add(new TranslatableText(GLOWING_WING_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
+            tooltip.add(Text.translatable(GLOWING_WING_TRANSLATION_KEY).formatted(Formatting.GRAY, Formatting.ITALIC));
         }
         if (!ignoreDisplayTag && wing.contains("display")) {
             NbtCompound displayTag = wing.getCompound("display");
             if (context.isAdvanced()) {
-                tooltip.add((new TranslatableText("item.color", String.format("#%06X", displayTag.getInt("color")))).formatted(Formatting.GRAY));
+                tooltip.add((Text.translatable("item.color", String.format("#%06X", displayTag.getInt("color")))).formatted(Formatting.GRAY));
             } else {
-                tooltip.add((new TranslatableText("item.dyed")).formatted(Formatting.GRAY, Formatting.ITALIC));
+                tooltip.add((Text.translatable("item.dyed")).formatted(Formatting.GRAY, Formatting.ITALIC));
             }
         } else if (wing.contains("BlockEntityTag")) {
             NbtCompound blockEntityTag = wing.getCompound("BlockEntityTag");
             int baseColor = blockEntityTag.getInt("Base");
-            tooltip.add((new TranslatableText("block.minecraft.banner." + BannerPattern.BASE.getName() + '.' + DyeColor.byId(baseColor).getName())).formatted(Formatting.GRAY));
+            tooltip.add((Text.translatable("block.minecraft.banner." + BannerPatterns.BASE.getValue().getPath() + '.' + DyeColor.byId(baseColor).getName())).formatted(Formatting.GRAY));
             NbtList listnbt = blockEntityTag.getList("Patterns", 10);
 
             for (int i = 0; i < listnbt.size() && i < 6; ++i) {
                 NbtCompound patternNBT = listnbt.getCompound(i);
                 DyeColor dyecolor = DyeColor.byId(patternNBT.getInt("Color"));
-                BannerPattern bannerpattern = BannerPattern.byId(patternNBT.getString("Pattern"));
-                if (bannerpattern != null) {
-                    tooltip.add((new TranslatableText("block.minecraft.banner." + bannerpattern.getName() + '.' + dyecolor.getName())).formatted(Formatting.GRAY));
+                RegistryEntry<BannerPattern> bannerpattern = BannerPattern.byId(patternNBT.getString("Pattern"));
+                if (bannerpattern != null && bannerpattern.getKey().isPresent()) {
+                    tooltip.add((Text.translatable("block.minecraft.banner." + bannerpattern.getKey().get().getValue().getPath() + '.' + dyecolor.getName())).formatted(Formatting.GRAY));
                 }
             }
         }

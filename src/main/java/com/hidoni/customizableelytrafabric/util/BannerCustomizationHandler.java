@@ -20,11 +20,14 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.util.registry.RegistryKey;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BannerCustomizationHandler extends CustomizationHandler {
-    private final List<Pair<BannerPattern, DyeColor>> patterns;
+    private final List<Pair<RegistryEntry<BannerPattern>, DyeColor>> patterns;
 
     public BannerCustomizationHandler(ItemStack itemIn) {
         this(itemIn.getOrCreateNbt());
@@ -55,9 +58,13 @@ public class BannerCustomizationHandler extends CustomizationHandler {
         float[] baseColor = patterns.get(0).getSecond().getColorComponents();
         renderModel.render(matrixStackIn, ItemRenderer.getItemGlintConsumer(bufferIn, RenderLayer.getEntityTranslucent(textureLocation), false, false), packedLightIn, OverlayTexture.DEFAULT_UV, baseColor[0], baseColor[1], baseColor[2], 1.0F);
         for (int i = 1; i < 17 && i < patterns.size(); ++i) {
-            Pair<BannerPattern, DyeColor> pair = patterns.get(i);
+            Pair<RegistryEntry<BannerPattern>, DyeColor> pair = patterns.get(i);
             float[] afloat = pair.getSecond().getColorComponents();
-            SpriteIdentifier rendermaterial = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, CustomizableElytraItem.getTextureLocation(pair.getFirst()));
+            Optional<RegistryKey<BannerPattern>> bannerPatternRegistryKey = pair.getFirst().getKey();
+            if (bannerPatternRegistryKey.isEmpty()) {
+                continue;
+            }
+            SpriteIdentifier rendermaterial = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, CustomizableElytraItem.getTextureLocation(bannerPatternRegistryKey.get()));
             if (rendermaterial.getSprite().getId() != MissingSprite.getMissingSpriteId()) // Don't render this banner pattern if it's missing, silently hide the pattern
             {
                 renderModel.render(matrixStackIn, rendermaterial.getVertexConsumer(bufferIn, RenderLayer::getEntityTranslucent), packedLightIn, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);

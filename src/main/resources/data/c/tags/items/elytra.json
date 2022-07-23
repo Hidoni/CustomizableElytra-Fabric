@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "customizableelytra:customizable_elytra"
+    "customizableelytra:customizable_elytra",
+    "minecraft:elytra"
   ]
 }

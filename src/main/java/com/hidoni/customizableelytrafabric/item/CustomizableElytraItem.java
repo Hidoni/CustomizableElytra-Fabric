@@ -125,10 +125,13 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem, F
 
             for (int i = 0; i < listnbt.size() && i < 6; ++i) {
                 NbtCompound patternNBT = listnbt.getCompound(i);
-                DyeColor dyecolor = DyeColor.byId(patternNBT.getInt("Color"));
-                RegistryEntry<BannerPattern> bannerpattern = BannerPattern.byId(patternNBT.getString("Pattern"));
-                if (bannerpattern != null && bannerpattern.getKey().isPresent()) {
-                    tooltip.add((Text.translatable("block.minecraft.banner." + bannerpattern.getKey().get().getValue().getPath() + '.' + dyecolor.getName())).formatted(Formatting.GRAY));
+                DyeColor dyeColor = DyeColor.byId(patternNBT.getInt("Color"));
+                RegistryEntry<BannerPattern> registryEntry = BannerPattern.byId(patternNBT.getString("Pattern"));
+                if (registryEntry != null) {
+                    registryEntry.getKey().map((key) -> key.getValue().toShortTranslationKey()).ifPresent((translationKey) -> {
+                        Identifier identifier = new Identifier(translationKey);
+                        tooltip.add(Text.translatable("block." + identifier.getNamespace() +".banner." + identifier.getPath() + "." + dyeColor.getName()).formatted(Formatting.GRAY));
+                    });
                 }
             }
         }

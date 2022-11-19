@@ -1,6 +1,7 @@
 package com.hidoni.customizableelytrafabric.item;
 
 import com.hidoni.customizableelytrafabric.CustomizableElytra;
+import com.hidoni.customizableelytrafabric.util.ElytraCustomizationData;
 import com.hidoni.customizableelytrafabric.util.ElytraCustomizationUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -78,14 +79,16 @@ public class CustomizableElytraItem extends ElytraItem implements DyeableItem, F
         if (wingInfo != null) {
             if (wingInfo.contains("left")) {
                 NbtCompound leftWing = wingInfo.getCompound("left");
-                if (!leftWing.isEmpty()) {
+                ElytraCustomizationData leftWingData = ElytraCustomizationUtil.getData(leftWing);
+                if (leftWingData.handler.isModified()) {
                     tooltip.add(Text.translatable(LEFT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
                     applyTooltip(tooltip, context, leftWing);
                 }
             }
             if (wingInfo.contains("right")) {
                 NbtCompound rightWing = wingInfo.getCompound("right");
-                if (!rightWing.isEmpty()) {
+                ElytraCustomizationData rightWingData = ElytraCustomizationUtil.getData(rightWing);
+                if (rightWingData.handler.isModified()) {
                     tooltip.add(Text.translatable(RIGHT_WING_TRANSLATION_KEY).formatted(Formatting.GRAY));
                     applyTooltip(tooltip, context, rightWing);
                 }

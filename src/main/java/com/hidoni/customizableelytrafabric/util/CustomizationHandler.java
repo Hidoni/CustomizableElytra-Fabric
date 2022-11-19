@@ -39,6 +39,10 @@ public class CustomizationHandler {
         return lightLevel;
     }
 
+    public boolean isModified() {
+        return wingLightLevel != 0 || wingCapeHidden;
+    }
+
     @Environment(EnvType.CLIENT)
     public <T extends LivingEntity, M extends AnimalModel<T>> void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, M renderModel, Identifier textureLocation, boolean hasGlint) {
         renderModel.setAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

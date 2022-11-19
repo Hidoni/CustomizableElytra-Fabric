@@ -47,6 +47,11 @@ public class DyeCustomizationHandler extends CustomizationHandler {
     }
 
     @Override
+    public boolean isModified() {
+        return true;
+    }
+
+    @Override
     public <T extends LivingEntity, M extends AnimalModel<T>> void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, M renderModel, Identifier textureLocation, boolean hasGlint) {
         List<Float> colors = getColors(color);
         renderModel.setAngles(entitylivingbaseIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);

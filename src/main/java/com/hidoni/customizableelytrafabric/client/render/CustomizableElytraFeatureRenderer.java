@@ -9,9 +9,6 @@ import com.hidoni.customizableelytrafabric.util.ElytraCustomizationData;
 import com.hidoni.customizableelytrafabric.util.ElytraCustomizationUtil;
 import com.hidoni.customizableelytrafabric.util.ElytraTextureUtil;
 import com.hidoni.customizableelytrafabric.util.SplitCustomizationHandler;
-import dev.emi.trinkets.api.SlotReference;
-import dev.emi.trinkets.api.TrinketComponent;
-import dev.emi.trinkets.api.TrinketsApi;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.PlayerModelPart;
@@ -27,10 +24,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.Pair;
 
 import java.util.List;
-import java.util.Optional;
 
 public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends EntityModel<T>> extends ElytraFeatureRenderer<T, M> {
     private static final Identifier TEXTURE_DYEABLE_ELYTRA = new Identifier(CustomizableElytra.MOD_ID, "textures/entity/elytra.png");
@@ -67,15 +62,6 @@ public class CustomizableElytraFeatureRenderer<T extends LivingEntity, M extends
             elytra = getColytraSubItem(elytra);
             if (elytra != ItemStack.EMPTY) {
                 return elytra;
-            }
-        }
-        if (com.hidoni.customizableelytrafabric.CustomizableElytra.trinketsLoaded) {
-            Optional<TrinketComponent> trinketComponent = TrinketsApi.getTrinketComponent(entity);
-            if (trinketComponent.isPresent()) {
-                List<Pair<SlotReference, ItemStack>> equipped_elytra = trinketComponent.get().getEquipped(ModItems.CUSTOMIZABLE_ELYTRA);
-                if (!equipped_elytra.isEmpty()) {
-                    return equipped_elytra.get(0).getRight();
-                }
             }
         }
         return ItemStack.EMPTY;

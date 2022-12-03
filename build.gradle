@@ -87,7 +87,3 @@ repositories {
 loom {
     accessWidenerPath = file("src/main/resources/customizableelytra.accesswidener")
 }
-
-dependencies {
-    modImplementation "dev.emi:trinkets:${trinkets_version}"
-}

@@ -10,7 +10,8 @@
     "ElytraFeatureRendererAccessor",
     "PlayerSkinTextureAccessor",
     "PlayerSkinTextureInvoker",
-    "ResourceTextureInvoker"
+    "ResourceTextureInvoker",
+    "SpriteAtlasTextureAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

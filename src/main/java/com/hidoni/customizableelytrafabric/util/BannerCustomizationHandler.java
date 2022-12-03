@@ -1,16 +1,18 @@
 package com.hidoni.customizableelytrafabric.util;
 
 import com.hidoni.customizableelytrafabric.item.CustomizableElytraItem;
+import com.hidoni.customizableelytrafabric.mixin.SpriteAtlasTextureAccessor;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.block.entity.BannerBlockEntity;
 import net.minecraft.block.entity.BannerPattern;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.AnimalModel;
 import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.texture.MissingSprite;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
@@ -18,12 +20,13 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.RegistryKey;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class BannerCustomizationHandler extends CustomizationHandler {
@@ -70,7 +73,8 @@ public class BannerCustomizationHandler extends CustomizationHandler {
                 continue;
             }
             SpriteIdentifier rendermaterial = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, CustomizableElytraItem.getTextureLocation(bannerPatternRegistryKey.get()));
-            if (rendermaterial.getTextureId() != MissingSprite.getMissingSpriteId()) // Don't render this banner pattern if it's missing, silently hide the pattern
+            Map<Identifier, Sprite> sprites = ((SpriteAtlasTextureAccessor) MinecraftClient.getInstance().getBakedModelManager().getAtlas(rendermaterial.getAtlasId())).getSprites();
+            if (sprites.get(rendermaterial.getTextureId()) != null) // Don't render this banner pattern if it's missing, silently hide the pattern
             {
                 renderModel.render(matrixStackIn, rendermaterial.getVertexConsumer(bufferIn, RenderLayer::getEntityTranslucent), packedLightIn, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);
             }

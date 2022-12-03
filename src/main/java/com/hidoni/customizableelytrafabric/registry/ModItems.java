@@ -11,16 +11,17 @@ import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.registry.Registry;
 
 public class ModItems {
-    public static final Item CUSTOMIZABLE_ELYTRA = Registry.register(Registry.ITEM, new Identifier(CustomizableElytra.MOD_ID, "customizable_elytra"), new CustomizableElytraItem(new FabricItemSettings().maxDamage(Items.ELYTRA.getMaxDamage()).rarity(Rarity.UNCOMMON).equipmentSlot(stack -> EquipmentSlot.CHEST)));
+    public static final Item CUSTOMIZABLE_ELYTRA = Registry.register(Registries.ITEM, new Identifier(CustomizableElytra.MOD_ID, "customizable_elytra"), new CustomizableElytraItem(new FabricItemSettings().maxDamage(Items.ELYTRA.getMaxDamage()).rarity(Rarity.UNCOMMON).equipmentSlot(stack -> EquipmentSlot.CHEST)));
 
-    public static final Item ELYTRA_WING = Registry.register(Registry.ITEM, new Identifier(CustomizableElytra.MOD_ID, "elytra_wing"), new ElytraWingItem(new FabricItemSettings().rarity(Rarity.UNCOMMON).maxDamage(Items.ELYTRA.getMaxDamage())));
+    public static final Item ELYTRA_WING = Registry.register(Registries.ITEM, new Identifier(CustomizableElytra.MOD_ID, "elytra_wing"), new ElytraWingItem(new FabricItemSettings().rarity(Rarity.UNCOMMON).maxDamage(Items.ELYTRA.getMaxDamage())));
 
     public static void register() {
 

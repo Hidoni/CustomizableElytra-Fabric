@@ -11,14 +11,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.List;
 
 public class ElytraDyeRecipe extends SpecialCraftingRecipe {
-    public ElytraDyeRecipe(Identifier id) {
-        super(id);
+    public ElytraDyeRecipe(Identifier id, CraftingRecipeCategory category) {
+        super(id, category);
     }
 
     @Override

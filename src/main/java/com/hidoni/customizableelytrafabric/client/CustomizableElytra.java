@@ -10,16 +10,11 @@ import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRenderEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.LivingEntityFeatureRendererRegistrationCallback;
-import net.fabricmc.fabric.api.event.client.ClientSpriteRegistryCallback;
 import net.fabricmc.fabric.api.object.builder.v1.client.model.FabricModelPredicateProviderRegistry;
-import net.minecraft.block.entity.BannerPattern;
 import net.minecraft.client.render.entity.ArmorStandEntityRenderer;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryKey;
 
 @Environment(EnvType.CLIENT)
 public class CustomizableElytra implements ClientModInitializer {
@@ -29,7 +24,6 @@ public class CustomizableElytra implements ClientModInitializer {
     public void onInitializeClient() {
         registerModelPredicates();
         registerColorProviders();
-        registerElytraBannerPatterns();
         registerFeatureRendererEventHandlers();
         registerFeatureRenderers();
     }
@@ -44,16 +38,6 @@ public class CustomizableElytra implements ClientModInitializer {
                 ((CustomizableElytraItem) stack.getItem()).getColor(stack, tintIndex), ModItems.CUSTOMIZABLE_ELYTRA);
         ColorProviderRegistry.ITEM.register((stack, tintIndex) ->
                 tintIndex > 0 ? -1 : ((ElytraWingItem) stack.getItem()).getColor(stack), ModItems.ELYTRA_WING);
-    }
-
-    private void registerElytraBannerPatterns() {
-        ClientSpriteRegistryCallback.event(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE).register(((atlasTexture, registry) ->
-        {
-            for (RegistryKey<BannerPattern> pattern : Registry.BANNER_PATTERN.getKeys()) {
-                Identifier textureIdentifier = CustomizableElytraItem.getTextureLocation(pattern);
-                registry.register(textureIdentifier);
-            }
-        }));
     }
 
     private void registerFeatureRendererEventHandlers() {

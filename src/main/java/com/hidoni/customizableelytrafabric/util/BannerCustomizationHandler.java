@@ -20,8 +20,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.util.registry.RegistryKey;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.registry.RegistryKey;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +70,7 @@ public class BannerCustomizationHandler extends CustomizationHandler {
                 continue;
             }
             SpriteIdentifier rendermaterial = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, CustomizableElytraItem.getTextureLocation(bannerPatternRegistryKey.get()));
-            if (rendermaterial.getSprite().getId() != MissingSprite.getMissingSpriteId()) // Don't render this banner pattern if it's missing, silently hide the pattern
+            if (rendermaterial.getTextureId() != MissingSprite.getMissingSpriteId()) // Don't render this banner pattern if it's missing, silently hide the pattern
             {
                 renderModel.render(matrixStackIn, rendermaterial.getVertexConsumer(bufferIn, RenderLayer::getEntityTranslucent), packedLightIn, OverlayTexture.DEFAULT_UV, afloat[0], afloat[1], afloat[2], 1.0F);
             }

@@ -10,20 +10,21 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
-import net.minecraft.tag.TagKey;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.Map;
 import java.util.function.Predicate;
 
 public class SplitToWingRecipe extends SpecialCraftingRecipe {
-    public SplitToWingRecipe(Identifier id) {
-        super(id);
+    public SplitToWingRecipe(Identifier id, CraftingRecipeCategory category) {
+        super(id, category);
     }
-    private static final TagKey<Item> ElytraItemTag = TagKey.of(Registry.ITEM_KEY, new Identifier("c","elytra"));
+    private static final TagKey<Item> ElytraItemTag = TagKey.of(RegistryKeys.ITEM, new Identifier("c","elytra"));
 
     @Override
     public boolean matches(CraftingInventory inv, World world) {

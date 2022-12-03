@@ -1,6 +1,5 @@
 package com.hidoni.customizableelytrafabric.recipe;
 
-import com.google.common.collect.Maps;
 import com.hidoni.customizableelytrafabric.registry.ModItems;
 import com.hidoni.customizableelytrafabric.registry.ModRecipes;
 import net.minecraft.enchantment.Enchantment;
@@ -10,14 +9,15 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.SpecialCraftingRecipe;
+import net.minecraft.recipe.book.CraftingRecipeCategory;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
 
 import java.util.Map;
 
 public class ElytraWingCombinationRecipe extends SpecialCraftingRecipe {
-    public ElytraWingCombinationRecipe(Identifier id) {
-        super(id);
+    public ElytraWingCombinationRecipe(Identifier id, CraftingRecipeCategory category) {
+        super(id, category);
     }
 
     @Override

@@ -13,7 +13,6 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.AnimalModel;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
@@ -72,7 +71,7 @@ public class BannerCustomizationHandler extends CustomizationHandler {
             if (bannerPatternRegistryKey.isEmpty()) {
                 continue;
             }
-            SpriteIdentifier rendermaterial = new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, CustomizableElytraItem.getTextureLocation(bannerPatternRegistryKey.get()));
+            SpriteIdentifier rendermaterial = new SpriteIdentifier(ElytraCustomizationUtil.ELYTRA_TEXTURE_ATLAS, CustomizableElytraItem.getTextureLocation(bannerPatternRegistryKey.get()));
             Map<Identifier, Sprite> sprites = ((SpriteAtlasTextureAccessor) MinecraftClient.getInstance().getBakedModelManager().getAtlas(rendermaterial.getAtlasId())).getSprites();
             if (sprites.get(rendermaterial.getTextureId()) != null) // Don't render this banner pattern if it's missing, silently hide the pattern
             {

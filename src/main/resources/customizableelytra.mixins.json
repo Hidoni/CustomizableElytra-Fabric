@@ -11,6 +11,7 @@
     "PlayerSkinTextureAccessor",
     "PlayerSkinTextureInvoker",
     "ResourceTextureInvoker",
+    "BakedModelManagerMixin",
     "SpriteAtlasTextureAccessor"
   ],
   "injectors": {
